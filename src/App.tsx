@@ -1,47 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import MoviesList from './components/moviesList';
-import MoviesCount from './components/moviesCount';
-import Paginator from './components/paginator';
-import './App.scss';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import MoviesList from "./components/moviesList";
+import MoviesCount from "./components/moviesCount";
+import MoviesFilters from "./components/moviesFilters";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Spinner } from "reactstrap";
+import "./App.scss";
+import axios from "axios";
 
-function App(){
-
+function App() {
   const [movies, setMovies] = useState([]);
   const [moviesCount, setMoviesCount] = useState("");
 
   useEffect(() => {
-   getMovies().then(movies => setMovies(movies));
-   getMoviesCount().then(moviesCount => setMoviesCount(moviesCount));
-  }, [])
+    getMoviesCount().then((moviesCount) => setMoviesCount(moviesCount));
+  }, []);
 
-  const getMovies = async () => {
-    let response = await axios.get(`https://desolate-journey-34342.herokuapp.com/`);
+  const getMovies = async (limit: number, page: number) => {
+    let response = await axios.get(
+      `https://desolate-journey-34342.herokuapp.com?limit=${limit}&page=${page}`
+    );
     return response.data;
-  }
+  };
 
   const getMoviesCount = async () => {
-    let response = await axios.get(`https://desolate-journey-34342.herokuapp.com/movies/count`);
+    let response = await axios.get(
+      `https://desolate-journey-34342.herokuapp.com/movies/count`
+    );
     return response.data.count;
-  }
-  
+  };
+
+  const handleFiltersChanges = (limit: number, page: number) => {
+    setMovies([]);
+    getMovies(limit, page).then((movies) => setMovies(movies));
+  };
 
   return (
-    <div className="App">
-      <MoviesCount count={moviesCount}/>
-      <Paginator
-        totalCount={moviesCount}
-        itemsPerPage={10}
-        currentPage={1}
-        maxPagesShown={6}
-        showPrevButton={true}
-        showNextButton={true}
-        onPageClick={() => {}}
-        onPrevButtonClick={() => {}}
-        onNextButtonClick={() => {}}
-      />
-      <MoviesList movies={movies} />
-    </div>
+    <Router>
+      <div className="App">
+        <MoviesCount count={moviesCount} />
+        <MoviesFilters count={moviesCount} onChange={handleFiltersChanges} />
+        {movies.length > 0 ? (
+          <MoviesList movies={movies} />
+        ) : (
+          <div style={{textAlign: 'center', paddingTop: '15%'}}>
+            <Spinner size="lg" color="primary" />
+          </div>
+        )}
+      </div>
+    </Router>
   );
 }
 

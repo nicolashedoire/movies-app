@@ -1,1 +1,1 @@
-export { default } from './moviesCount';
+export { default } from "./moviesCount";
