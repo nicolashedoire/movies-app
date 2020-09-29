@@ -12,6 +12,7 @@ export default function MoviesFilters({
 }) {
   const history = useHistory();
 
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
   const [year, setYear] = useState(1990);
@@ -19,7 +20,7 @@ export default function MoviesFilters({
   const [activateNextButton, setActivateNextButton] = React.useState(true);
 
   useEffect(() => {
-    history.push(`/?page=${page}&limit=${limit}&year=${year}`);
+    history.push(`/?page=${page}&limit=${limit}&year=${year}&search=${search}`);
     onChange(limit, page, year);
     if (page === 1) {
       setActivatePrevButton(false);
@@ -27,7 +28,7 @@ export default function MoviesFilters({
     } else {
       setActivatePrevButton(true);
     }
-  }, [page, limit, year]);
+  }, [page, limit, year, search]);
 
   const getPagesNumber = useCallback(() => {
     return Math.floor(Number(count) / Number(limit));
@@ -76,6 +77,15 @@ export default function MoviesFilters({
     <Row>
       <Col md={3}>
         <Input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          placeholder="Rechercher un film"
+          className="m-4"
+        />
+      </Col>
+      <Col md={1}>
+        <Input
           type="select"
           value={limit}
           className="m-4"
@@ -90,7 +100,7 @@ export default function MoviesFilters({
           <option value={96}>96</option>
         </Input>
       </Col>
-      <Col md={3}>
+      <Col md={1}>
         <Input
           type="number"
           min={1892}
