@@ -79,7 +79,10 @@ export default function MoviesFilters({
           type="select"
           value={limit}
           className="m-4"
-          onChange={(e) => setLimit(Number(e.currentTarget.value))}
+          onChange={(e) => {
+            setLimit(Number(e.currentTarget.value));
+            setPage(1);
+          }}
         >
           <option value={12}>12</option>
           <option value={24}>24</option>
