@@ -13,35 +13,47 @@ export default function MoviesFilters({
   const history = useHistory();
 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(12);
+  const [year, setYear] = useState(1990);
   const [activatePrevButton, setActivatePrevButton] = React.useState(false);
   const [activateNextButton, setActivateNextButton] = React.useState(true);
 
   useEffect(() => {
-    history.push(`/?page=${page}&limit=${limit}`);
-    onChange(limit, page);
-  }, [page, limit]);
+    history.push(`/?page=${page}&limit=${limit}&year=${year}`);
+    onChange(limit, page, year);
+    if (page === 1) {
+      setActivatePrevButton(false);
+      setActivateNextButton(true);
+    } else {
+      setActivatePrevButton(true);
+    }
+  }, [page, limit, year]);
 
   const getPagesNumber = useCallback(() => {
-    return Math.ceil(Number(count) / Number(limit));
+    return Math.floor(Number(count) / Number(limit));
   }, [count, limit]);
 
-  const handlePaginatorButtonClick = (value: number) => {
-    const numberOfpages = getPagesNumber();
-    value === numberOfpages
-      ? setActivateNextButton(false)
-      : setActivateNextButton(true);
-    value === 1 ? setActivatePrevButton(false) : setActivatePrevButton(true);
-    setPage(value);
-  };
+  const handlePaginatorButtonClick = useCallback(
+    (value: number) => {
+      const numberOfpages = getPagesNumber();
+      if (value === 1) {
+        setActivateNextButton(true);
+        setActivatePrevButton(false);
+      } else {
+        setActivatePrevButton(true);
+        if (value === numberOfpages) {
+          setActivateNextButton(false);
+        }
+      }
+      setPage(value);
+    },
+    [page]
+  );
 
   const handlePaginatorPrevClick = useCallback(() => {
     if (page > 1) {
       const pageNumber = page - 1;
       setPage(pageNumber);
-      pageNumber === 1
-        ? setActivatePrevButton(false)
-        : setActivatePrevButton(true);
     }
     setActivateNextButton(true);
   }, [page]);
@@ -69,11 +81,23 @@ export default function MoviesFilters({
           className="m-4"
           onChange={(e) => setLimit(Number(e.currentTarget.value))}
         >
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option>
+          <option value={12}>12</option>
+          <option value={24}>24</option>
+          <option value={48}>48</option>
+          <option value={96}>96</option>
         </Input>
+      </Col>
+      <Col md={3}>
+        <Input
+          type="number"
+          min={1892}
+          className="m-4"
+          value={year}
+          onChange={(e) => {
+            setYear(Number(e.currentTarget.value));
+            setPage(1);
+          }}
+        />
       </Col>
       <Col md={6}>
         <Paginator

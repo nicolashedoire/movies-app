@@ -11,27 +11,26 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [moviesCount, setMoviesCount] = useState("");
 
-  useEffect(() => {
-    getMoviesCount().then((moviesCount) => setMoviesCount(moviesCount));
-  }, []);
+  useEffect(() => {}, []);
 
-  const getMovies = async (limit: number, page: number) => {
+  const getMovies = async (limit: number, page: number, year: number) => {
     let response = await axios.get(
-      `https://desolate-journey-34342.herokuapp.com?limit=${limit}&page=${page}`
+      `https://desolate-journey-34342.herokuapp.com?limit=${limit}&page=${page}&year=${year}`
     );
     return response.data;
   };
 
-  const getMoviesCount = async () => {
+  const getMoviesCount = async (year: number) => {
     let response = await axios.get(
-      `https://desolate-journey-34342.herokuapp.com/movies/count`
+      `https://desolate-journey-34342.herokuapp.com/movies/count?year=${year}`
     );
     return response.data.count;
   };
 
-  const handleFiltersChanges = (limit: number, page: number) => {
+  const handleFiltersChanges = (limit: number, page: number, year: number) => {
     setMovies([]);
-    getMovies(limit, page).then((movies) => setMovies(movies));
+    getMovies(limit, page, year).then((movies) => setMovies(movies));
+    getMoviesCount(year).then((moviesCount) => setMoviesCount(moviesCount));
   };
 
   return (
@@ -42,7 +41,7 @@ function App() {
         {movies.length > 0 ? (
           <MoviesList movies={movies} />
         ) : (
-          <div style={{textAlign: 'center', paddingTop: '15%'}}>
+          <div style={{ textAlign: "center", paddingTop: "15%" }}>
             <Spinner size="lg" color="primary" />
           </div>
         )}

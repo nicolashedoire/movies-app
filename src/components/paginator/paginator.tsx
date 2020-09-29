@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, ButtonGroup, Row, Col } from "reactstrap";
 import IPaginator from "./types";
 import "./styles.scss";
+import { compact } from 'lodash';
 
 export default function Paginator({
   totalCount,
@@ -14,20 +15,29 @@ export default function Paginator({
   onNextButtonClick,
   itemsPerPage,
 }: IPaginator) {
+
   const buildFirstButton = () => {
-    return (
+    return showPrevButton ? (
       <Button key={"1"} onClick={() => onPageClick(1)}>
+        First
+      </Button>
+    ) : (
+      <Button key={"1"} disabled>
         First
       </Button>
     );
   };
 
   const buildLastButton = () => {
-    const numberOfpages: number = Math.ceil(
+    const numberOfpages: number = Math.floor(
       Number(totalCount) / Number(itemsPerPage)
     );
-    return (
+    return showNextButton ? (
       <Button key={numberOfpages} onClick={() => onPageClick(numberOfpages)}>
+        Last
+      </Button>
+    ) : (
+      <Button key={numberOfpages} disabled>
         Last
       </Button>
     );
@@ -54,30 +64,41 @@ export default function Paginator({
       const numberOfpages: number = Math.ceil(
         Number(totalCount) / Number(itemsPerPage)
       );
-      const values =
-        numberOfpages > 0 ? Array.from(Array(numberOfpages).keys()) : undefined;
+      let values: any =
+      numberOfpages > 0 ? Array.from(Array(numberOfpages).keys()) : undefined;
+      values.shift();
+      let filterValues = 0;
+      let filteredValues = values.map((val: any) => {
+        if(val >= currentPage){
+          return val;
+        }else{
+          filterValues++;
+        }
+      });
+      for(let i = 0; i < filterValues; i++){
+        filteredValues.push('x');
+      }
+      filteredValues = compact(filteredValues).slice(0, maxPagesShown);
       return numberOfpages > 1 ? (
         <div className="p-4">
           {buildFirstButton()}
           {buildPrevButton()}
           <ButtonGroup>
-            {values &&
-              values.map((value: number) => {
-                const computedValue = value + currentPage;
-                return computedValue <= maxPagesShown + currentPage - 1 &&
-                  computedValue < numberOfpages ? (
+            {filteredValues &&
+              filteredValues.map((page: number) => {
+                return page < numberOfpages ? (
                   <Button
-                    key={value}
+                    key={page}
                     className={
-                      currentPage === computedValue
+                      currentPage === page
                         ? "paginator-button-hover"
                         : ""
                     }
-                    onClick={() => onPageClick(computedValue)}
+                    onClick={() => onPageClick(page)}
                   >
-                    {computedValue}
+                    {page}
                   </Button>
-                ) : null;
+                ) : <Button><span style={{color: 'transparent'}}>..</span></Button>  ;
               })}
           </ButtonGroup>
           {buildNextButton()}
