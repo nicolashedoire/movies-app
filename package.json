@@ -14,6 +14,7 @@
     "@types/react-router-dom": "^5.1.5",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "firebase": "^7.21.1",
     "framer-motion": "^2.7.5",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
