@@ -8,6 +8,7 @@
 </p>
 
 ## Install dependencies
+
 ```sh
 npm install
 ```
@@ -31,4 +32,5 @@ npm run build
 ```
 
 ## Cheers!
+
 ![Cheers!](https://github.githubassets.com/images/icons/emoji/unicode/1f37b.png "Cheers!")

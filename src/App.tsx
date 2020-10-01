@@ -7,6 +7,8 @@ import { Spinner } from "reactstrap";
 import "./App.scss";
 import axios from "axios";
 
+import NavBar from './components/navbar';
+
 function App() {
   const [movies, setMovies] = useState([]);
   const [moviesCount, setMoviesCount] = useState("");
@@ -36,6 +38,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <NavBar/>
         <MoviesCount count={moviesCount} />
         <MoviesFilters count={moviesCount} onChange={handleFiltersChanges} />
         {movies.length > 0 ? (
