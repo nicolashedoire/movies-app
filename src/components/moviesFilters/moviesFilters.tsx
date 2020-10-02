@@ -20,7 +20,9 @@ export default function MoviesFilters({
   const [activateNextButton, setActivateNextButton] = React.useState(true);
 
   useEffect(() => {
-    history.push(`/?page=${page}&limit=${limit}&year=${year}&search=${search}`);
+    history.push(
+      `/movies?page=${page}&limit=${limit}&year=${year}&search=${search}`
+    );
     onChange(limit, page, year);
     if (page === 1) {
       setActivatePrevButton(false);

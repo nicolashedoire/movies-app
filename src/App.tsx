@@ -1,53 +1,34 @@
-import React, { useState, useEffect } from "react";
-import MoviesList from "./components/moviesList";
-import MoviesCount from "./components/moviesCount";
-import MoviesFilters from "./components/moviesFilters";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Spinner } from "reactstrap";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "./App.scss";
-import axios from "axios";
 
-import NavBar from './components/navbar';
+import NavBar from "./components/navbar";
+import Dashboard from "./pages/dashboard";
+import MoviesDetails from "./pages/movies/details";
+import MoviesCreate from "./pages/movies/create";
+import MoviesUpdate from "./pages/movies/update";
+import SignIn from "./pages/auth/signIn";
+import SignUp from "./pages/auth/signUp";
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [moviesCount, setMoviesCount] = useState("");
-
-  useEffect(() => {}, []);
-
-  const getMovies = async (limit: number, page: number, year: number) => {
-    let response = await axios.get(
-      `https://desolate-journey-34342.herokuapp.com?limit=${limit}&page=${page}&year=${year}`
-    );
-    return response.data;
-  };
-
-  const getMoviesCount = async (year: number) => {
-    let response = await axios.get(
-      `https://desolate-journey-34342.herokuapp.com/movies/count?year=${year}`
-    );
-    return response.data.count;
-  };
-
-  const handleFiltersChanges = (limit: number, page: number, year: number) => {
-    setMovies([]);
-    getMovies(limit, page, year).then((movies) => setMovies(movies));
-    getMoviesCount(year).then((moviesCount) => setMoviesCount(moviesCount));
-  };
-
   return (
     <Router>
       <div className="App">
-        <NavBar/>
-        <MoviesCount count={moviesCount} />
-        <MoviesFilters count={moviesCount} onChange={handleFiltersChanges} />
-        {movies.length > 0 ? (
-          <MoviesList movies={movies} />
-        ) : (
-          <div style={{ textAlign: "center", paddingTop: "15%" }}>
-            <Spinner size="lg" color="primary" />
-          </div>
-        )}
+        <NavBar />
+        <Switch>
+          <Redirect from={"/"} to={"/movies"} exact />
+          <Route exact path="/movies" component={Dashboard} />
+          <Route exact path="/movies/new" component={MoviesCreate} />
+          <Route exact path="/movies/:id" component={MoviesDetails} />
+          <Route exact path="/movies/:id/edit" component={MoviesUpdate} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/signin" component={SignIn} />
+        </Switch>
       </div>
     </Router>
   );
