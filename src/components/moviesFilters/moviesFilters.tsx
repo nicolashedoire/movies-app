@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Input, Row, Col } from "reactstrap";
 import Paginator from "../paginator";
+import { config } from "./config";
 
 export default function MoviesFilters({
   count,
@@ -13,9 +14,9 @@ export default function MoviesFilters({
   const history = useHistory();
 
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
-  const [year, setYear] = useState(1990);
+  const [page, setPage] = useState(config.page);
+  const [limit, setLimit] = useState(config.limit);
+  const [year, setYear] = useState(config.year);
   const [activatePrevButton, setActivatePrevButton] = React.useState(false);
   const [activateNextButton, setActivateNextButton] = React.useState(true);
 

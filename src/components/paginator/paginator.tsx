@@ -84,7 +84,7 @@ export default function Paginator({
           {buildPrevButton()}
           <ButtonGroup>
             {filteredValues &&
-              filteredValues.map((page: number) => {
+              filteredValues.map((page: number, index: number) => {
                 return page < numberOfpages ? (
                   <Button
                     key={page}
@@ -96,7 +96,7 @@ export default function Paginator({
                     {page}
                   </Button>
                 ) : (
-                  <Button>
+                  <Button key={`${page}_${index}`}>
                     <span style={{ color: "transparent" }}>..</span>
                   </Button>
                 );

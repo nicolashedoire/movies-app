@@ -15,7 +15,7 @@ export default function SignUp() {
   return (
     <Container fluid>
       <Form onSubmit={handleSubmit}>
-        <h3 className="mt-4">SignUp</h3>
+        <h3 className="mt-4">Inscription</h3>
         <Row className="mt-4">
           <Col md={12} className="mb-4">
             <Input
@@ -50,7 +50,7 @@ export default function SignUp() {
             />
           </Col>
           <Col md={12}>
-            <Button>Login</Button>
+            <Button>S'inscrire</Button>
           </Col>
         </Row>
       </Form>

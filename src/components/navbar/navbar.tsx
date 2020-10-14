@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -8,31 +9,66 @@ import {
   NavbarText,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getAuth } from "../../pages/auth/selectors";
+import firebase from "../../firebase";
 
 export default function TopBar() {
+  const history = useHistory();
+  const auth = useSelector(getAuth);
+
   return (
-    <div>
+    <div style={{ position: "sticky", top: 0, left: 0, right: 0 }}>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Movies-app</NavbarBrand>
+        <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
         <NavbarToggler />
         <Collapse isOpen={true} navbar>
           <Nav className="mr-auto" navbar></Nav>
           <NavbarText>
-            <NavLink to="/signin" className="ml-2">
-              SignIn
-            </NavLink>
-            <NavLink to="/signup" className="ml-2">
-              SignUp
-            </NavLink>
-            <NavLink to="/movies/new" className="ml-2">
-              New movie
-            </NavLink>
-            <NavLink to="/logout" className="ml-2">
-              Logout
-            </NavLink>
-            <NavLink to="/profile" className="ml-2 p-2 border">
-              NH
-            </NavLink>
+            {auth.uid ? null : (
+              <React.Fragment>
+                <NavLink to="/signin" className="ml-2">
+                  Connexion
+                </NavLink>
+                <NavLink to="/signup" className="ml-2">
+                  Inscription
+                </NavLink>
+              </React.Fragment>
+            )}
+            {auth.uid ? (
+              <React.Fragment>
+                <NavLink to="/dashboard" className="ml-2">
+                  Tableau de bord
+                </NavLink>
+                <NavLink to="/movies" className="ml-2">
+                  Films
+                </NavLink>
+                <NavLink to="/movies/new" className="ml-2">
+                  Nouveau film
+                </NavLink>
+                <NavLink
+                  to="/logout"
+                  onClick={async () => {
+                    try {
+                      await firebase
+                        .auth()
+                        .signOut()
+                        .then(() => {
+                          history.push("/signin");
+                        });
+                    } catch (err) {
+                      alert(err);
+                    }
+                  }}
+                  className="ml-2"
+                >
+                  Deconnexion
+                </NavLink>
+                <NavLink to="/profile" className="ml-2 p-2 border">
+                  NH
+                </NavLink>
+              </React.Fragment>
+            ) : null}
           </NavbarText>
         </Collapse>
       </Navbar>
