@@ -8,6 +8,8 @@ import {
   getMoviesSeen,
   putHistoricalRating,
   unsubscribeMoviesToWatch,
+  unsubscribeMoviesSeen,
+  getHistorical
 } from "../../api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
@@ -15,6 +17,8 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import Rating from "../../components/sentimentRating";
 import { cloneDeep } from "lodash";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function RatingContainer(props: any) {
   const handleRate = (rating: number) => {
@@ -25,7 +29,8 @@ function RatingContainer(props: any) {
 }
 
 export default function Dashboard() {
-  const moviesCount: number = useContext(AuthContext).historicalCount;
+  const context: any = useContext(AuthContext);
+  const moviesCount: number = context.historicalCount;
   const [moviesToWatch, setMoviesToWatch] = useState([]);
   const [moviesSeen, setMoviesSeen] = useState([]);
   const [countMoviesToWatch, setCountMoviesToWatch] = useState(0);
@@ -75,6 +80,19 @@ export default function Dashboard() {
                   className="text-center m-2 border p-2"
                   style={{ minWidth: "250px" }}
                 >
+                  <div className="text-right">
+                  <FontAwesomeIcon size="1x" icon={faTimes} className="icon-color pointer" onClick={() => {
+                      unsubscribeMoviesSeen(uid, movie.id).then(
+                        (response) => {
+                          getHistorical(uid).then((response) => {
+                            context.setHistorical(response);
+                          });
+                          getCountMoviesSeen(uid).then((response) => setCountMoviesSeen(response));
+                          getMoviesSeen(uid).then((response) => setMoviesSeen(response));
+                        }
+                      )
+                  }}/>
+                  </div>
                   <p>{movie?.title}</p>
                   <div>
                     <img width="90" src={movie.image} title={movie.title} />
@@ -117,6 +135,9 @@ export default function Dashboard() {
                     onClick={() =>
                       unsubscribeMoviesToWatch(uid, movie.id).then(
                         (response) => {
+                          getHistorical(uid).then((response) => {
+                            context.setHistorical(response);
+                          });
                           getCountMoviesToWatch(uid).then((response) =>
                             setCountMoviesToWatch(response)
                           );

@@ -9,6 +9,7 @@ import {
   getMovies,
   getMoviesCount,
   postHistorical,
+  putHistorical,
   getHistorical,
 } from "../../../api";
 import { AuthContext } from "../../../index";
@@ -26,11 +27,21 @@ export default function Movies() {
   };
 
   const handleOnActionClick = (params: { action: string; movieId: string }) => {
-    postHistorical({ ...params, userId: uid }).then(() => {
-      getHistorical(uid).then((response) => {
-        context.setHistorical(response);
+    const historicalExists = context.historical.filter((element: any) => element.movie_id === params.movieId);
+
+    if(historicalExists.length > 0){
+      putHistorical({ ...params, userId: uid }).then(() => {
+        getHistorical(uid).then((response) => {
+          context.setHistorical(response);
+        });
       });
-    });
+    }else{
+      postHistorical({ ...params, userId: uid }).then(() => {
+        getHistorical(uid).then((response) => {
+          context.setHistorical(response);
+        });
+      });
+    }
   };
 
   return (

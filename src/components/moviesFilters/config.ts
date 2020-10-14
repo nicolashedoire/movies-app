@@ -1,5 +1,5 @@
 export const config = {
-  year: 2020,
+  year: 1993,
   limit: 12,
-  page: 26,
+  page: 1,
 };

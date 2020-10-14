@@ -70,6 +70,17 @@ export const unsubscribeMoviesToWatch = async (
   return response.data;
 };
 
+export const unsubscribeMoviesSeen = async (
+  uid: string,
+  movieId: string
+) => {
+  let response = await axios.put(
+    `${process.env.REACT_APP_API_PATH}/historical/seen/unsubscribe?uid=${uid}`,
+    { movieId }
+  );
+  return response.data;
+};
+
 export const getCountMoviesToWatch = async (uid: string) => {
   let response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical/count/towatch?uid=${uid}`
@@ -96,6 +107,18 @@ export const postHistorical = async (params: {
   return response.data;
 };
 
+export const putHistorical = async (params: {
+  action: string;
+  movieId: string;
+  userId: string;
+}) => {
+  let response = await axios.put(
+    `${process.env.REACT_APP_API_PATH}/historical?uid=${params.userId}`,
+    params
+  );
+  return response.data;
+};
+
 export const putHistoricalRating = async ({
   rating,
   movieId,
@@ -103,7 +126,6 @@ export const putHistoricalRating = async ({
   rating: number;
   movieId: string;
 }) => {
-  console.log(rating, movieId);
   let response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/historical/rating/${movieId}`,
     {
