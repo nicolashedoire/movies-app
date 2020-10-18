@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Button, Container, Form } from "reactstrap";
+import { Input, Row, Col, Container, Form } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { NavLink, useParams } from "react-router-dom";
 import { cloneDeep } from "lodash";
 import { getMovie, updateMovie } from "../../../api";
 
 export default function MoviesUpdate() {
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   const { id } = useParams();
 
   const [allocineId, setAllocineId] = useState("");
@@ -22,9 +25,13 @@ export default function MoviesUpdate() {
     newMovie.date = date;
     newMovie.synopsis = synopsis;
     newMovie.allocineId = allocineId;
-    updateMovie(newMovie, id).then((response) => {
-      console.log(response);
-    });
+    updateMovie(newMovie, id)
+      .then((response) => {
+        setModal(true);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   useEffect(() => {
@@ -96,6 +103,16 @@ export default function MoviesUpdate() {
           </Col>
         </Row>
       </Form>
+
+      <Modal isOpen={modal} toggle={toggle} centered={true}>
+        <ModalHeader toggle={toggle}>Informations</ModalHeader>
+        <ModalBody>Le film a bien été mis à jour !</ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={toggle}>
+            OK
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 }

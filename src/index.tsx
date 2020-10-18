@@ -72,12 +72,15 @@ interface IContextProps {
   historical: Array<any>;
   historicalCount: number;
   setHistorical: Function;
+  statistics: Array<any>;
+  setStatistics: Function;
 }
 
 export const AuthContext = createContext({} as IContextProps);
 
 function AuthIsLoaded({ children }: any) {
   const [historical, setHistorical] = useState([]);
+  const [statistics, setStatistics] = useState([]);
   const auth = useSelector((state: RootState) => state.firebase.auth);
   const uid = useSelector((state: RootState) => state.firebase.auth.uid);
   if (!isLoaded(auth))
@@ -94,6 +97,8 @@ function AuthIsLoaded({ children }: any) {
         historical,
         historicalCount: historical.length,
         setHistorical: setHistorical,
+        statistics,
+        setStatistics: setStatistics,
       }}
     >
       {children}

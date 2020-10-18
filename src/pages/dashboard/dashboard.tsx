@@ -9,28 +9,33 @@ import {
   putHistoricalRating,
   unsubscribeMoviesToWatch,
   unsubscribeMoviesSeen,
-  getHistorical
+  getHistorical,
+  getStatistics,
 } from "../../api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import Rating from "../../components/sentimentRating";
+import Rating from "../../components/rating";
 import { cloneDeep } from "lodash";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-function RatingContainer(props: any) {
-  const handleRate = (rating: number) => {
-    putHistoricalRating({ rating, movieId: props.movieId });
-  };
-
-  return <Rating rate={props.rating} onRating={handleRate} />;
-}
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+} from "recharts";
 
 export default function Dashboard() {
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
+
   const context: any = useContext(AuthContext);
   const moviesCount: number = context.historicalCount;
+  const statistics: Array<any> = context.statistics;
   const [moviesToWatch, setMoviesToWatch] = useState([]);
   const [moviesSeen, setMoviesSeen] = useState([]);
   const [countMoviesToWatch, setCountMoviesToWatch] = useState(0);
@@ -44,7 +49,17 @@ export default function Dashboard() {
     getMoviesToWatch(uid).then((response) => setMoviesToWatch(response));
     getCountMoviesSeen(uid).then((response) => setCountMoviesSeen(response));
     getMoviesSeen(uid).then((response) => setMoviesSeen(response));
+    getStatistics(uid).then((response) => context.setStatistics(response));
   }, []);
+
+  useEffect(() => {}, [statistics]);
+
+  const handleRate = (rating: number, movieId: string) => {
+    putHistoricalRating({ rating, movieId }).then(() => {
+      getMoviesSeen(uid).then((response) => setMoviesSeen(response));
+      getStatistics(uid).then((response) => context.setStatistics(response));
+    });
+  };
 
   return (
     <Container fluid>
@@ -56,14 +71,14 @@ export default function Dashboard() {
       >
         Total de films : {moviesCount ? moviesCount : 0}
       </motion.h1>
-      <motion.h2
+      <motion.h3
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0 }}
         className="mt-4"
       >
         Films vus : {countMoviesSeen ? countMoviesSeen : 0}
-      </motion.h2>
+      </motion.h3>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -81,24 +96,33 @@ export default function Dashboard() {
                   style={{ minWidth: "250px" }}
                 >
                   <div className="text-right">
-                  <FontAwesomeIcon size="1x" icon={faTimes} className="icon-color pointer" onClick={() => {
-                      unsubscribeMoviesSeen(uid, movie.id).then(
-                        (response) => {
-                          getHistorical(uid).then((response) => {
-                            context.setHistorical(response);
-                          });
-                          getCountMoviesSeen(uid).then((response) => setCountMoviesSeen(response));
-                          getMoviesSeen(uid).then((response) => setMoviesSeen(response));
-                        }
-                      )
-                  }}/>
+                    <FontAwesomeIcon
+                      size="1x"
+                      icon={faTimes}
+                      className="icon-color pointer"
+                      onClick={() => {
+                        unsubscribeMoviesSeen(uid, movie.id).then(
+                          (response) => {
+                            getHistorical(uid).then((response) => {
+                              context.setHistorical(response);
+                            });
+                            getCountMoviesSeen(uid).then((response) =>
+                              setCountMoviesSeen(response)
+                            );
+                            getMoviesSeen(uid).then((response) =>
+                              setMoviesSeen(response)
+                            );
+                          }
+                        );
+                      }}
+                    />
                   </div>
                   <p>{movie?.title}</p>
                   <div>
                     <img width="90" src={movie.image} title={movie.title} />
                   </div>
                   <div className="mt-4">
-                    <RatingContainer rating={movie.rating} movieId={movie.id} />
+                  <Rating value={movie.rating} size={16} onChange={(e: any) => handleRate(e, movie.id)} />
                   </div>
                   <NavLink to={`/movies/${movie.id}`}>
                     <Button className="mt-3">Voir le détail</Button>
@@ -108,9 +132,26 @@ export default function Dashboard() {
             })
           : null}
       </motion.div>
-      <h2 className="mt-4">
+      <BarChart
+        width={600}
+        height={300}
+        data={statistics}
+        margin={{ top: 25, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="rating" />
+        <YAxis />
+        <Legend />
+        <Tooltip
+          labelFormatter={function (value) {
+            return `Note : ${value}`;
+          }}
+        />
+        <Bar dataKey="count" name="Nombre de film(s)" fill="#2ecc71" />
+      </BarChart>
+      <motion.h3 className="mt-4">
         Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
-      </h2>
+      </motion.h3>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -155,6 +196,7 @@ export default function Dashboard() {
             })
           : null}
       </motion.div>
+      <motion.h3 className="mt-4">Films de la semaine : --</motion.h3>
     </Container>
   );
 }

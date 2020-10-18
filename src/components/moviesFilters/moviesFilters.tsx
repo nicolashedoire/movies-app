@@ -3,6 +3,9 @@ import { useHistory } from "react-router-dom";
 import { Input, Row, Col } from "reactstrap";
 import Paginator from "../paginator";
 import { config } from "./config";
+import { postSearch } from "../../api";
+import { NavLink } from "react-router-dom";
+import styles from './styles.module.scss';
 
 export default function MoviesFilters({
   count,
@@ -14,6 +17,7 @@ export default function MoviesFilters({
   const history = useHistory();
 
   const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [page, setPage] = useState(config.page);
   const [limit, setLimit] = useState(config.limit);
   const [year, setYear] = useState(config.year);
@@ -31,7 +35,17 @@ export default function MoviesFilters({
     } else {
       setActivatePrevButton(true);
     }
-  }, [page, limit, year, search]);
+  }, [page, limit, year]);
+
+  useEffect(() => {
+    if (search !== "" && search.length >= 3) {
+      postSearch(search).then((result) => {
+        setSearchResults(result);
+      });
+    }else{
+      setSearchResults([]);
+    }
+  }, [search]);
 
   const getPagesNumber = useCallback(() => {
     return Math.floor(Number(count) / Number(limit));
@@ -82,10 +96,23 @@ export default function MoviesFilters({
         <Input
           type="text"
           value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
+          onChange={(e) => {
+            setSearch(e.currentTarget.value);
+          }}
           placeholder="Rechercher un film"
           className="m-4"
         />
+        {searchResults.length > 0 ? (
+          <div className={`${styles.searchList} ml-4 p-4`}>
+            {searchResults.map((movie: any) => {
+              return (
+                <NavLink key={movie.id} to={`/movies/${movie.id}`}>
+                  <p>{movie?.title}</p>
+                </NavLink>
+              );
+            })}
+          </div>
+        ) : null}
       </Col>
       <Col md={1}>
         <Input

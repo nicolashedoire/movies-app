@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Input, Row, Col, Button, Container, Form } from "reactstrap";
+import { Input, Row, Col, Container, Form } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { postMovie } from "../../../api";
 
 export default function MoviesCreate() {
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [image, setImage] = useState("");
@@ -12,14 +16,31 @@ export default function MoviesCreate() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    postMovie({
-      title,
-      synopsis,
-      creation_date: date,
-      image,
-      director,
-      duration,
-    });
+    return validateMovie()
+      ? postMovie({
+          title,
+          synopsis,
+          creation_date: date,
+          image,
+          director,
+          duration,
+        })
+      : null;
+  };
+
+  const validateMovie = () => {
+    if (
+      title === "" ||
+      synopsis === "" ||
+      duration === "" ||
+      image === "" ||
+      director === "" ||
+      date === ""
+    ) {
+      setModal(true);
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -88,6 +109,17 @@ export default function MoviesCreate() {
           </Col>
         </Row>
       </Form>
+      <Modal isOpen={modal} toggle={toggle} centered={true}>
+        <ModalHeader toggle={toggle}>Informations</ModalHeader>
+        <ModalBody>
+          Il manque des informations pour enregistrer le film !
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={toggle}>
+            OK
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 }

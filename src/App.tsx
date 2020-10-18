@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
 import "./App.scss";
 
 import NavBar from "./components/navbar";
@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/rootReducer";
 import { AuthContext } from "./index";
 import { getHistorical } from "./api";
+import ErrorPage from "./pages/error";
 
 function App() {
   const uid = useSelector((state: RootState) => state.firebase.auth.uid);
@@ -42,6 +43,7 @@ function App() {
               path="/movies/:id/edit"
               component={MoviesUpdate}
             />
+            <Route path="/error" component={ErrorPage} />
             <Redirect from="*" to={"/dashboard"} exact />
           </Switch>
         </React.Fragment>

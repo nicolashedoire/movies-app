@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Alert, Row, Col } from "reactstrap";
+import { Container, Alert, Row, Col } from "reactstrap";
 import { NavLink, useParams } from "react-router-dom";
-import { getMovie } from "../../../api";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { getMovie, deleteMovie } from "../../../api";
+import { useHistory } from "react-router-dom";
 
 export default function MoviesDetails() {
   const { id } = useParams();
+  const history = useHistory();
 
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   const [movie, setMovie] = useState<any | null>(null);
 
   useEffect(() => {
     if (id) {
-      getMovie(id).then((movie: any) => setMovie(movie));
+      getMovie(id).then((movie: any) => setMovie(movie)).catch((err) => {
+        history.push("/error");
+      });
     }
   }, []);
 
@@ -20,8 +27,9 @@ export default function MoviesDetails() {
         <Button className="mt-4">Retour</Button>
       </NavLink>
       <NavLink to={`/movies/${id}/edit`} className="mr-2">
-        <Button className="mt-4">Edit</Button>
+        <Button className="mt-4">Editer</Button>
       </NavLink>
+      <Button color="danger" className="mt-4 mr-2" onClick={() => setModal(true)}>Supprimer</Button>
       <a
         target="_blank"
         href={`http://www.allocine.fr/film/fichefilm_gen_cfilm=${movie?.allocine_id}.html`}
@@ -62,6 +70,26 @@ export default function MoviesDetails() {
           </Col>
         </Row>
       ) : null}
+            <Modal isOpen={modal} toggle={toggle} centered={true}>
+        <ModalHeader toggle={toggle}>Suppression du film</ModalHeader>
+        <ModalBody>
+          <h5>Êtes-vous certain de vouloir supprimer ce film ?</h5>
+          <p>Ce film ne fera plus parti de l'historique des gens...</p>
+        </ModalBody>
+        <ModalFooter>
+        <Button color="danger" onClick={toggle}>
+            Annuler
+          </Button>
+          <Button color="primary" onClick={() => deleteMovie(movie?.id).then(response => {
+            setModal(false);
+          }).catch(err => {
+            setModal(false);
+            alert(err);
+          })}>
+            OK
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 }

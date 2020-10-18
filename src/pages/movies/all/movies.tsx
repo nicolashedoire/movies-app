@@ -27,15 +27,17 @@ export default function Movies() {
   };
 
   const handleOnActionClick = (params: { action: string; movieId: string }) => {
-    const historicalExists = context.historical.filter((element: any) => element.movie_id === params.movieId);
+    const historicalExists = context.historical.filter(
+      (element: any) => element.movie_id === params.movieId
+    );
 
-    if(historicalExists.length > 0){
+    if (historicalExists.length > 0) {
       putHistorical({ ...params, userId: uid }).then(() => {
         getHistorical(uid).then((response) => {
           context.setHistorical(response);
         });
       });
-    }else{
+    } else {
       postHistorical({ ...params, userId: uid }).then(() => {
         getHistorical(uid).then((response) => {
           context.setHistorical(response);

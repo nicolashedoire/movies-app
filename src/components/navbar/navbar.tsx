@@ -18,7 +18,9 @@ export default function TopBar() {
   const auth = useSelector(getAuth);
 
   return (
-    <div style={{ position: "sticky", top: 0, left: 0, right: 0 }}>
+    <div
+      style={{ position: "sticky", top: 0, left: 0, right: 0, zIndex: 9999 }}
+    >
       <Navbar color="light" light expand="md">
         <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
         <NavbarToggler />
