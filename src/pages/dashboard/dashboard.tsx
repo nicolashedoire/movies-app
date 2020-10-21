@@ -122,7 +122,11 @@ export default function Dashboard() {
                     <img width="90" src={movie.image} title={movie.title} />
                   </div>
                   <div className="mt-4">
-                  <Rating value={movie.rating} size={16} onChange={(e: any) => handleRate(e, movie.id)} />
+                    <Rating
+                      value={movie.rating}
+                      size={16}
+                      onChange={(e: any) => handleRate(e, movie.id)}
+                    />
                   </div>
                   <NavLink to={`/movies/${movie.id}`}>
                     <Button className="mt-3">Voir le détail</Button>
@@ -191,6 +195,9 @@ export default function Dashboard() {
                   >
                     Je ne suis plus intéressé
                   </Button>
+                  <NavLink to={`/movies/${movie.id}`}>
+                    <Button className="mt-3">Voir le détail</Button>
+                  </NavLink>
                 </div>
               );
             })

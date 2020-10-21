@@ -5,7 +5,7 @@ import Paginator from "../paginator";
 import { config } from "./config";
 import { postSearch } from "../../api";
 import { NavLink } from "react-router-dom";
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 export default function MoviesFilters({
   count,
@@ -42,7 +42,7 @@ export default function MoviesFilters({
       postSearch(search).then((result) => {
         setSearchResults(result);
       });
-    }else{
+    } else {
       setSearchResults([]);
     }
   }, [search]);

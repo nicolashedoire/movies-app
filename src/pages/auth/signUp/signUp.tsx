@@ -1,15 +1,41 @@
 import React, { useState } from "react";
 import { Input, Row, Col, Button, Container, Form } from "reactstrap";
+import firebase, { firestore } from "../../../firebase";
+import { useHistory } from "react-router-dom";
 
 export default function SignUp() {
+  const history = useHistory();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(username, password);
+    try {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(username, password)
+        .then((response) => {
+          return firestore
+            .collection("users")
+            .doc(response.user?.uid)
+            .set({
+              firstname,
+              lastname,
+              initials: `${firstname[0].toUpperCase()}${lastname[0].toUpperCase()}`,
+            });
+        })
+        .then(() => {
+          history.push("/");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -22,6 +48,7 @@ export default function SignUp() {
               type="email"
               placeholder="Username"
               value={username}
+              autoComplete="off"
               onChange={(e) => setUsername(e.currentTarget.value)}
             />
           </Col>
@@ -30,6 +57,7 @@ export default function SignUp() {
               type="password"
               placeholder="Password"
               value={password}
+              autoComplete="off"
               onChange={(e) => setPassword(e.currentTarget.value)}
             />
           </Col>
@@ -38,6 +66,7 @@ export default function SignUp() {
               type="text"
               placeholder="FirstName"
               value={firstname}
+              autoComplete="off"
               onChange={(e) => setFirstName(e.currentTarget.value)}
             />
           </Col>
@@ -46,6 +75,7 @@ export default function SignUp() {
               type="text"
               placeholder="LastName"
               value={lastname}
+              autoComplete="off"
               onChange={(e) => setLastName(e.currentTarget.value)}
             />
           </Col>

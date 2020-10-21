@@ -15,9 +15,11 @@ export default function MoviesDetails() {
 
   useEffect(() => {
     if (id) {
-      getMovie(id).then((movie: any) => setMovie(movie)).catch((err) => {
-        history.push("/error");
-      });
+      getMovie(id)
+        .then((movie: any) => setMovie(movie))
+        .catch((err) => {
+          history.push("/error");
+        });
     }
   }, []);
 
@@ -29,7 +31,13 @@ export default function MoviesDetails() {
       <NavLink to={`/movies/${id}/edit`} className="mr-2">
         <Button className="mt-4">Editer</Button>
       </NavLink>
-      <Button color="danger" className="mt-4 mr-2" onClick={() => setModal(true)}>Supprimer</Button>
+      <Button
+        color="danger"
+        className="mt-4 mr-2"
+        onClick={() => setModal(true)}
+      >
+        Supprimer
+      </Button>
       <a
         target="_blank"
         href={`http://www.allocine.fr/film/fichefilm_gen_cfilm=${movie?.allocine_id}.html`}
@@ -38,6 +46,9 @@ export default function MoviesDetails() {
           Voir la fiche allociné
         </Button>
       </a>
+      <Button className="mt-4 ml-2">Je veux le voir</Button>
+      <Button className="mt-4 ml-2">Je l'ai déjà vu</Button>
+      <Button className="mt-4 ml-2">Acheter le film</Button>
       {movie ? (
         <Row className="mt-4">
           <Col md={4}>
@@ -70,22 +81,29 @@ export default function MoviesDetails() {
           </Col>
         </Row>
       ) : null}
-            <Modal isOpen={modal} toggle={toggle} centered={true}>
+      <Modal isOpen={modal} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}>Suppression du film</ModalHeader>
         <ModalBody>
           <h5>Êtes-vous certain de vouloir supprimer ce film ?</h5>
           <p>Ce film ne fera plus parti de l'historique des gens...</p>
         </ModalBody>
         <ModalFooter>
-        <Button color="danger" onClick={toggle}>
+          <Button color="danger" onClick={toggle}>
             Annuler
           </Button>
-          <Button color="primary" onClick={() => deleteMovie(movie?.id).then(response => {
-            setModal(false);
-          }).catch(err => {
-            setModal(false);
-            alert(err);
-          })}>
+          <Button
+            color="primary"
+            onClick={() =>
+              deleteMovie(movie?.id)
+                .then((response) => {
+                  setModal(false);
+                })
+                .catch((err) => {
+                  setModal(false);
+                  alert(err);
+                })
+            }
+          >
             OK
           </Button>
         </ModalFooter>

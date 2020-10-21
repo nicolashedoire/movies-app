@@ -33,10 +33,10 @@ export const postMovie = async (movie: IMovie) => {
 
 export const deleteMovie = async (id: string) => {
   let response = await axios.delete(
-    `${process.env.REACT_APP_API_PATH}/movies/${id}`,
+    `${process.env.REACT_APP_API_PATH}/movies/${id}`
   );
   return response.data;
-}
+};
 
 export const getMovies = async (limit: number, page: number, year: number) => {
   let response = await axios.get(

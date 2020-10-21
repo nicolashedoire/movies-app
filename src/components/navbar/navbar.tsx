@@ -10,12 +10,13 @@ import {
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getAuth } from "../../pages/auth/selectors";
+import { getAuth, getProfile } from "../../pages/auth/selectors";
 import firebase from "../../firebase";
 
 export default function TopBar() {
   const history = useHistory();
   const auth = useSelector(getAuth);
+  const profile = useSelector(getProfile);
 
   return (
     <div
@@ -67,7 +68,7 @@ export default function TopBar() {
                   Deconnexion
                 </NavLink>
                 <NavLink to="/profile" className="ml-2 p-2 border">
-                  NH
+                  {profile?.initials ? profile?.initials : "NULL"}
                 </NavLink>
               </React.Fragment>
             ) : null}

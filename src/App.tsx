@@ -1,5 +1,10 @@
 import React, { useEffect, useContext } from "react";
-import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route,
+} from "react-router-dom";
 import "./App.scss";
 
 import NavBar from "./components/navbar";
