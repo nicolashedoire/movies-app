@@ -46,7 +46,7 @@ export default function SignUp() {
           <Col md={12} className="mb-4">
             <Input
               type="email"
-              placeholder="Username"
+              placeholder="Email"
               value={username}
               autoComplete="off"
               onChange={(e) => setUsername(e.currentTarget.value)}
