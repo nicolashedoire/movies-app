@@ -7,6 +7,7 @@ import { firestore } from "../../firebase";
 export default function Profile() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [genre, setGenre] = useState("");
   const profile = useSelector(getProfile);
   const uid = useSelector(getUid);
 
@@ -14,13 +15,14 @@ export default function Profile() {
     if (profile.lastname && profile.firstname) {
       setLastname(profile.lastname);
       setFirstname(profile.firstname);
+      setGenre(profile.genre);
     }
   }, [profile]);
 
-  useEffect(() => {}, [firstname, lastname]);
+  useEffect(() => {}, [firstname, lastname, genre]);
 
   const updateProfile = () => {
-    if(!uid){
+    if (!uid) {
       return;
     }
     return firestore
@@ -30,6 +32,7 @@ export default function Profile() {
         firstname,
         lastname,
         initials: `${firstname[0].toUpperCase()}${lastname[0].toUpperCase()}`,
+        genre,
       });
   };
 
@@ -50,17 +53,27 @@ export default function Profile() {
           />
           <Input
             type="text"
+            className="mb-4"
             value={firstname}
             placeholder="Prénom"
             autoComplete="off"
             onChange={(e) => setFirstname(e.currentTarget.value)}
           />
+          <Input
+            type="select"
+            className="mb-4"
+            value={genre}
+            placeholder="Sexe"
+            autoComplete="off"
+            onChange={(e) => setGenre(e.currentTarget.value)}
+          >
+            <option value="">Choisir le genre</option>
+            <option value="M">Homme</option>
+            <option value="F">Femme</option>
+          </Input>
         </Col>
         <Col md={12}>
-          <Button
-            color="primary"
-            onClick={updateProfile}
-          >
+          <Button color="primary" onClick={updateProfile}>
             Mettre à jour le profil
           </Button>
         </Col>

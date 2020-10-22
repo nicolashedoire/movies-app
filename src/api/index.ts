@@ -15,6 +15,13 @@ export const getMovie = async (id: string) => {
   return response.data;
 };
 
+export const getMoviesMonthly = async () => {
+  let response = await axios.get(
+    `${process.env.REACT_APP_API_PATH}/movies/monthly`
+  );
+  return response.data;
+};
+
 export const updateMovie = async (movie: IMovie, id: string) => {
   let response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/movies/${id}`,

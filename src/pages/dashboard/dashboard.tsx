@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Button } from "reactstrap";
+import { Container, Button, Alert } from "reactstrap";
 import { AuthContext } from "../../index";
 import {
   getCountMoviesToWatch,
@@ -11,6 +11,7 @@ import {
   unsubscribeMoviesSeen,
   getHistorical,
   getStatistics,
+  getMoviesMonthly,
 } from "../../api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
@@ -36,6 +37,7 @@ export default function Dashboard() {
   const context: any = useContext(AuthContext);
   const moviesCount: number = context.historicalCount;
   const statistics: Array<any> = context.statistics;
+  const [moviesMonthly, setMoviesMonthly] = useState([]);
   const [moviesToWatch, setMoviesToWatch] = useState([]);
   const [moviesSeen, setMoviesSeen] = useState([]);
   const [countMoviesToWatch, setCountMoviesToWatch] = useState(0);
@@ -50,6 +52,7 @@ export default function Dashboard() {
     getCountMoviesSeen(uid).then((response) => setCountMoviesSeen(response));
     getMoviesSeen(uid).then((response) => setMoviesSeen(response));
     getStatistics(uid).then((response) => context.setStatistics(response));
+    getMoviesMonthly().then((response) => setMoviesMonthly(response));
   }, []);
 
   useEffect(() => {}, [statistics]);
@@ -63,6 +66,39 @@ export default function Dashboard() {
 
   return (
     <Container fluid>
+      <motion.h3 className="mt-4">Les films ce mois-ci</motion.h3>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0 }}
+        className="mt-4 d-flex"
+        style={{ overflow: "scroll" }}
+      >
+        {moviesMonthly.length > 0 ? (
+          moviesMonthly.map((movie: any, index: number) => {
+            return (
+              <div
+                key={`movieToWatch_${index}`}
+                className="text-center m-2 border p-2"
+                style={{ minWidth: "250px" }}
+              >
+                <p>{movie?.title}</p>
+                <div>
+                  <img width="90" src={movie.image} title={movie.title} />
+                </div>
+                <p className="mt-3">{movie.creation_date}</p>
+                <NavLink to={`/movies/${movie.id}`}>
+                  <Button className="mt-3" color="primary">
+                    Voir le détail
+                  </Button>
+                </NavLink>
+              </div>
+            );
+          })
+        ) : (
+          <Alert>Pas de films ce mois...</Alert>
+        )}
+      </motion.div>
       <motion.h1
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -129,7 +165,9 @@ export default function Dashboard() {
                     />
                   </div>
                   <NavLink to={`/movies/${movie.id}`}>
-                    <Button className="mt-3">Voir le détail</Button>
+                    <Button className="mt-3" color="primary">
+                      Voir le détail
+                    </Button>
                   </NavLink>
                 </div>
               );
@@ -196,14 +234,15 @@ export default function Dashboard() {
                     Je ne suis plus intéressé
                   </Button>
                   <NavLink to={`/movies/${movie.id}`}>
-                    <Button className="mt-3">Voir le détail</Button>
+                    <Button className="mt-3" color="primary">
+                      Voir le détail
+                    </Button>
                   </NavLink>
                 </div>
               );
             })
           : null}
       </motion.div>
-      <motion.h3 className="mt-4">Films de la semaine : --</motion.h3>
     </Container>
   );
 }
