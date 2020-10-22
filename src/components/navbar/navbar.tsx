@@ -22,6 +22,7 @@ export default function TopBar() {
   return (
     <div
       style={{ position: "sticky", top: 0, left: 0, right: 0, zIndex: 9999 }}
+      className="navbarContainer"
     >
       <Navbar color="light" light expand="md">
         <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
@@ -41,15 +42,6 @@ export default function TopBar() {
             )}
             {auth.uid ? (
               <React.Fragment>
-                <NavLink to="/dashboard" className="ml-2">
-                  Tableau de bord
-                </NavLink>
-                <NavLink to="/movies" className="ml-2">
-                  Films
-                </NavLink>
-                <NavLink to="/movies/new" className="ml-2">
-                  Nouveau film
-                </NavLink>
                 <NavLink
                   to="/logout"
                   onClick={async () => {

@@ -46,7 +46,7 @@ export default function MoviesCreate() {
   return (
     <Container fluid>
       <Form onSubmit={handleSubmit}>
-        <h3 className="mt-4">New Movie</h3>
+        <h3 className="mt-4">Nouveau film</h3>
         <Row className="mt-4">
           <Col md={12} className="mb-4">
             <Input
