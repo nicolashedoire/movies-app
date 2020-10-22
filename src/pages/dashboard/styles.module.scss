@@ -5,15 +5,15 @@
   color: white;
   position: fixed;
   z-index: 999;
-  .statsCell{
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      justify-items: center;
-      align-items: center;
-      align-content: center;
-      p {
-          margin: auto;
-      }
+  .statsCell {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    p {
+      margin: auto;
+    }
   }
 }

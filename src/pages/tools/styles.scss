@@ -1,0 +1,35 @@
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.centered {
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  vertical-align: center;
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-zone-template {
+  grid-template-columns: 50% 50%;
+}
+
+.template-zone {
+  grid-template-columns: 60% 40%;
+}
+
+.scrapping-options {
+  padding-left: 45px;
+}

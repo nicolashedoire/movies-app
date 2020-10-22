@@ -15,6 +15,7 @@ import MoviesCreate from "./pages/movies/create";
 import MoviesUpdate from "./pages/movies/update";
 import Profile from "./pages/profile";
 import Search from "./pages/search";
+import Tools from "./pages/tools";
 import Sidebar from "./components/sidebar";
 import PrivateRoute from "./components/privateRoute";
 import { useSelector } from "react-redux";
@@ -43,6 +44,7 @@ function App() {
               <Redirect from="/" to={"/dashboard"} exact />
               <Route exact path="/search" component={Search}></Route>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/tools" component={Tools} />
               <PrivateRoute exact path="/profile" component={Profile} />
               <PrivateRoute exact path="/movies" component={Movies} />
               <PrivateRoute exact path="/movies/new" component={MoviesCreate} />

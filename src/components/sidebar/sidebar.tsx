@@ -8,6 +8,7 @@ import {
   faLayerGroup,
   faFolderPlus,
   faSearch,
+  faHammer,
 } from "@fortawesome/free-solid-svg-icons";
 import "./styles.scss";
 
@@ -52,6 +53,15 @@ export default function Sidebar(props: any) {
             <li className="mt-2 mb-2 p-2">
               <NavLink to="/profile" className="ml-2 p-2">
                 <FontAwesomeIcon size="1x" icon={faCog} className="pointer" />
+              </NavLink>
+            </li>
+            <li className="mt-2 mb-2 p-2">
+              <NavLink to="/tools" className="ml-2 p-2">
+                <FontAwesomeIcon
+                  size="1x"
+                  icon={faHammer}
+                  className="pointer"
+                />
               </NavLink>
             </li>
           </ul>

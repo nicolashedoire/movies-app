@@ -71,22 +71,18 @@ export default function Dashboard() {
         <Row>
           <Col md={2}>
             <div className={styles.statsCell}>
-              <p>
-              Total de films : {moviesCount ? moviesCount : 0}
-              </p>
+              <p>Total de films : {moviesCount ? moviesCount : 0}</p>
+            </div>
+          </Col>
+          <Col md={2}>
+            <div className={styles.statsCell}>
+              <p>Films vus : {countMoviesSeen ? countMoviesSeen : 0}</p>
             </div>
           </Col>
           <Col md={2}>
             <div className={styles.statsCell}>
               <p>
-              Films vus : {countMoviesSeen ? countMoviesSeen : 0}
-              </p>
-            </div>
-          </Col>
-          <Col md={2}>
-            <div className={styles.statsCell}>
-              <p>
-              Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
+                Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
               </p>
             </div>
           </Col>
