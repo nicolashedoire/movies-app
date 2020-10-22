@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Axios from "axios";
+import { getScrapping } from '../../api';
 import { Button, Input, Spinner, Container, Row, Col } from "reactstrap";
 import "./styles.scss";
 
@@ -32,14 +32,10 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
       endPage: 1000000000,
       timer: 1500,
     };
-    this.getMovie(this.state.page);
+    getScrapping(this.state.page).then((response) => {
+      this.setState({ movie: response, isLoading: false });
+    })
   }
-
-  getMovie = (page: number) => {
-    Axios.get(`http://localhost:5000?page=${page}`).then((result) => {
-      this.setState({ movie: result.data, isLoading: false });
-    });
-  };
 
   handlePageChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     this.setState({ page: event.currentTarget.value as number });
@@ -59,7 +55,9 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
 
   handleGetMovie = () => {
     this.setState({ isLoading: true });
-    this.getMovie(this.state.page);
+    getScrapping(this.state.page).then((response) => {
+      this.setState({ movie: response, isLoading: false });
+    })
   };
 
   startScrapping = () => {
@@ -67,7 +65,9 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
     let counter = startPage;
     const interval = setInterval(() => {
       if (counter < endPage) {
-        this.getMovie(counter);
+        getScrapping(counter).then((response) => {
+          this.setState({ movie: response, isLoading: false });
+        })
         counter++;
       } else {
         clearInterval(interval);
@@ -163,7 +163,7 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
                         <div>
                           {movie.image ? <img src={movie.image} /> : null}
                         </div>
-                        <div>
+                        <div className="mt-4">
                           {movie.title ? (
                             <p>
                               <b>Titre du film :</b> {movie.title}

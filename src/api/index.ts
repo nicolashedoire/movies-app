@@ -1,29 +1,34 @@
 import axios from "axios";
 import { IMovie } from "./types";
 
+export const getScrapping = async (page: number) => {
+  const response = await axios.get(`${process.env.REACT_APP_API_PATH}/scrapping?page=${page}`);
+  return response.data;
+};
+
 export const postSearch = async (text: string) => {
-  let response = await axios.post(`${process.env.REACT_APP_API_PATH}/search`, {
+  const response = await axios.post(`${process.env.REACT_APP_API_PATH}/search`, {
     search: text,
   });
   return response.data;
 };
 
 export const getMovie = async (id: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies/${id}`
   );
   return response.data;
 };
 
 export const getMoviesMonthly = async () => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies/monthly`
   );
   return response.data;
 };
 
 export const updateMovie = async (movie: IMovie, id: string) => {
-  let response = await axios.put(
+  const response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/movies/${id}`,
     movie
   );
@@ -31,7 +36,7 @@ export const updateMovie = async (movie: IMovie, id: string) => {
 };
 
 export const postMovie = async (movie: IMovie) => {
-  let response = await axios.post(
+  const response = await axios.post(
     `${process.env.REACT_APP_API_PATH}/movies`,
     movie
   );
@@ -39,42 +44,42 @@ export const postMovie = async (movie: IMovie) => {
 };
 
 export const deleteMovie = async (id: string) => {
-  let response = await axios.delete(
+  const response = await axios.delete(
     `${process.env.REACT_APP_API_PATH}/movies/${id}`
   );
   return response.data;
 };
 
 export const getMovies = async (limit: number, page: number, year: number) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies?limit=${limit}&page=${page}&year=${year}`
   );
   return response.data;
 };
 
 export const getMoviesCount = async (year: number) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies/count?year=${year}`
   );
   return response.data.count;
 };
 
 export const getHistorical = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical?uid=${uid}`
   );
   return response.data;
 };
 
 export const getMoviesSeen = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical/seen?uid=${uid}`
   );
   return response.data;
 };
 
 export const getMoviesToWatch = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical/towatch?uid=${uid}`
   );
   return response.data;
@@ -84,7 +89,7 @@ export const unsubscribeMoviesToWatch = async (
   uid: string,
   movieId: string
 ) => {
-  let response = await axios.put(
+  const response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/historical/towatch/unsubscribe?uid=${uid}`,
     { movieId }
   );
@@ -92,7 +97,7 @@ export const unsubscribeMoviesToWatch = async (
 };
 
 export const unsubscribeMoviesSeen = async (uid: string, movieId: string) => {
-  let response = await axios.put(
+  const response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/historical/seen/unsubscribe?uid=${uid}`,
     { movieId }
   );
@@ -100,14 +105,14 @@ export const unsubscribeMoviesSeen = async (uid: string, movieId: string) => {
 };
 
 export const getCountMoviesToWatch = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical/count/towatch?uid=${uid}`
   );
   return response.data;
 };
 
 export const getCountMoviesSeen = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/historical/count/seen?uid=${uid}`
   );
   return response.data;
@@ -118,7 +123,7 @@ export const postHistorical = async (params: {
   movieId: string;
   userId: string;
 }) => {
-  let response = await axios.post(
+  const response = await axios.post(
     `${process.env.REACT_APP_API_PATH}/historical`,
     params
   );
@@ -130,7 +135,7 @@ export const putHistorical = async (params: {
   movieId: string;
   userId: string;
 }) => {
-  let response = await axios.put(
+  const response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/historical?uid=${params.userId}`,
     params
   );
@@ -144,7 +149,7 @@ export const putHistoricalRating = async ({
   rating: number;
   movieId: string;
 }) => {
-  let response = await axios.put(
+  const response = await axios.put(
     `${process.env.REACT_APP_API_PATH}/historical/rating/${movieId}`,
     {
       rating: rating,
@@ -154,7 +159,7 @@ export const putHistoricalRating = async ({
 };
 
 export const getStatistics = async (uid: string) => {
-  let response = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/statistics?uid=${uid}`
   );
   return response.data;
