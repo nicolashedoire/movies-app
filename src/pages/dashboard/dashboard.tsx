@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Button, Alert } from "reactstrap";
+import { Container, Button, Alert, Row, Col } from "reactstrap";
+import styles from "./styles.module.scss";
 import { AuthContext } from "../../index";
 import {
   getCountMoviesToWatch,
@@ -65,184 +66,209 @@ export default function Dashboard() {
   };
 
   return (
-    <Container fluid>
-      <motion.h3 className="mt-4">Les films ce mois-ci</motion.h3>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0 }}
-        className="mt-4 d-flex"
-        style={{ overflow: "scroll" }}
-      >
-        {moviesMonthly.length > 0 ? (
-          moviesMonthly.map((movie: any, index: number) => {
-            return (
-              <div
-                key={`movieToWatch_${index}`}
-                className="text-center m-2 border p-2"
-                style={{ minWidth: "250px" }}
-              >
-                <p>{movie?.title}</p>
-                <div>
-                  <img width="90" src={movie.image} title={movie.title} />
-                </div>
-                <p className="mt-3">{movie.creation_date}</p>
-                <NavLink to={`/movies/${movie.id}`}>
-                  <Button className="mt-3" color="primary">
-                    Voir le détail
-                  </Button>
-                </NavLink>
-              </div>
-            );
-          })
-        ) : (
-          null
-        )}
-      </motion.div>
-      <motion.h1
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0 }}
-        className="mt-4"
-      >
-        Total de films : {moviesCount ? moviesCount : 0}
-      </motion.h1>
-      <motion.h3
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0 }}
-        className="mt-4"
-      >
-        Films vus : {countMoviesSeen ? countMoviesSeen : 0}
-      </motion.h3>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0 }}
-        className="mt-4 d-flex"
-        style={{ overflow: "scroll" }}
-      >
-        {moviesSeen.length > 0
-          ? moviesSeen.map((movie: any, index: number) => {
-              const movieId = cloneDeep(movie.id);
-              return (
-                <div
-                  key={`movieSeen${index}`}
-                  className="text-center m-2 border p-2"
-                  style={{ minWidth: "250px" }}
-                >
-                  <div className="text-right">
-                    <FontAwesomeIcon
-                      size="1x"
-                      icon={faTimes}
-                      className="icon-color pointer"
-                      onClick={() => {
-                        unsubscribeMoviesSeen(uid, movie.id).then(
+    <Container fluid className="p-0 m-0">
+      <div className={styles.statsBar}>
+        <Row>
+          <Col md={2}>
+            <div className={styles.statsCell}>
+              <p>
+              Total de films : {moviesCount ? moviesCount : 0}
+              </p>
+            </div>
+          </Col>
+          <Col md={2}>
+            <div className={styles.statsCell}>
+              <p>
+              Films vus : {countMoviesSeen ? countMoviesSeen : 0}
+              </p>
+            </div>
+          </Col>
+          <Col md={2}>
+            <div className={styles.statsCell}>
+              <p>
+              Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
+              </p>
+            </div>
+          </Col>
+        </Row>
+      </div>
+      <div className="p-4">
+        <motion.h3 className="mt-4">Les films ce mois-ci</motion.h3>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0 }}
+          className="mt-4 d-flex"
+          style={{ overflow: "scroll" }}
+        >
+          {moviesMonthly.length > 0
+            ? moviesMonthly.map((movie: any, index: number) => {
+                return (
+                  <div
+                    key={`movieToWatch_${index}`}
+                    className="text-center m-2 border p-2"
+                    style={{ minWidth: "250px" }}
+                  >
+                    <p>{movie?.title}</p>
+                    <div>
+                      <img width="90" src={movie.image} title={movie.title} />
+                    </div>
+                    <p className="mt-3">{movie.creation_date}</p>
+                    <NavLink to={`/movies/${movie.id}`}>
+                      <Button className="mt-3" color="primary">
+                        Voir le détail
+                      </Button>
+                    </NavLink>
+                  </div>
+                );
+              })
+            : null}
+        </motion.div>
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0 }}
+          className="mt-4"
+        >
+          Total de films : {moviesCount ? moviesCount : 0}
+        </motion.h1>
+        <motion.h3
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0 }}
+          className="mt-4"
+        >
+          Films vus : {countMoviesSeen ? countMoviesSeen : 0}
+        </motion.h3>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0 }}
+          className="mt-4 d-flex"
+          style={{ overflow: "scroll" }}
+        >
+          {moviesSeen.length > 0
+            ? moviesSeen.map((movie: any, index: number) => {
+                const movieId = cloneDeep(movie.id);
+                return (
+                  <div
+                    key={`movieSeen${index}`}
+                    className="text-center m-2 border p-2"
+                    style={{ minWidth: "250px" }}
+                  >
+                    <div className="text-right">
+                      <FontAwesomeIcon
+                        size="1x"
+                        icon={faTimes}
+                        className="icon-color pointer"
+                        onClick={() => {
+                          unsubscribeMoviesSeen(uid, movie.id).then(
+                            (response) => {
+                              getHistorical(uid).then((response) => {
+                                context.setHistorical(response);
+                              });
+                              getCountMoviesSeen(uid).then((response) =>
+                                setCountMoviesSeen(response)
+                              );
+                              getMoviesSeen(uid).then((response) =>
+                                setMoviesSeen(response)
+                              );
+                            }
+                          );
+                        }}
+                      />
+                    </div>
+                    <p>{movie?.title}</p>
+                    <div>
+                      <img width="90" src={movie.image} title={movie.title} />
+                    </div>
+                    <div className="mt-4">
+                      <Rating
+                        value={movie.rating}
+                        size={16}
+                        onChange={(e: any) => handleRate(e, movie.id)}
+                      />
+                    </div>
+                    <NavLink to={`/movies/${movie.id}`}>
+                      <Button className="mt-3" color="primary">
+                        Voir le détail
+                      </Button>
+                    </NavLink>
+                  </div>
+                );
+              })
+            : null}
+        </motion.div>
+        <BarChart
+          width={600}
+          height={300}
+          data={statistics}
+          margin={{ top: 25, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="rating" />
+          <YAxis />
+          <Legend />
+          <Tooltip
+            labelFormatter={function (value) {
+              return `Note : ${value}`;
+            }}
+          />
+          <Bar dataKey="count" name="Nombre de film(s)" fill="#2ecc71" />
+        </BarChart>
+        <motion.h3 className="mt-4">
+          Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
+        </motion.h3>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0 }}
+          className="mt-4 d-flex"
+          style={{ overflow: "scroll" }}
+        >
+          {moviesToWatch.length > 0
+            ? moviesToWatch.map((movie: any, index: number) => {
+                return (
+                  <div
+                    key={`movieToWatch_${index}`}
+                    className="text-center m-2 border p-2"
+                    style={{ minWidth: "250px" }}
+                  >
+                    <p>{movie?.title}</p>
+                    <div>
+                      <img width="90" src={movie.image} title={movie.title} />
+                    </div>
+                    <Button
+                      className="mt-3"
+                      onClick={() =>
+                        unsubscribeMoviesToWatch(uid, movie.id).then(
                           (response) => {
                             getHistorical(uid).then((response) => {
                               context.setHistorical(response);
                             });
-                            getCountMoviesSeen(uid).then((response) =>
-                              setCountMoviesSeen(response)
+                            getCountMoviesToWatch(uid).then((response) =>
+                              setCountMoviesToWatch(response)
                             );
-                            getMoviesSeen(uid).then((response) =>
-                              setMoviesSeen(response)
+                            getMoviesToWatch(uid).then((response) =>
+                              setMoviesToWatch(response)
                             );
                           }
-                        );
-                      }}
-                    />
-                  </div>
-                  <p>{movie?.title}</p>
-                  <div>
-                    <img width="90" src={movie.image} title={movie.title} />
-                  </div>
-                  <div className="mt-4">
-                    <Rating
-                      value={movie.rating}
-                      size={16}
-                      onChange={(e: any) => handleRate(e, movie.id)}
-                    />
-                  </div>
-                  <NavLink to={`/movies/${movie.id}`}>
-                    <Button className="mt-3" color="primary">
-                      Voir le détail
+                        )
+                      }
+                    >
+                      Je ne suis plus intéressé
                     </Button>
-                  </NavLink>
-                </div>
-              );
-            })
-          : null}
-      </motion.div>
-      <BarChart
-        width={600}
-        height={300}
-        data={statistics}
-        margin={{ top: 25, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="rating" />
-        <YAxis />
-        <Legend />
-        <Tooltip
-          labelFormatter={function (value) {
-            return `Note : ${value}`;
-          }}
-        />
-        <Bar dataKey="count" name="Nombre de film(s)" fill="#2ecc71" />
-      </BarChart>
-      <motion.h3 className="mt-4">
-        Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
-      </motion.h3>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0 }}
-        className="mt-4 d-flex"
-        style={{ overflow: "scroll" }}
-      >
-        {moviesToWatch.length > 0
-          ? moviesToWatch.map((movie: any, index: number) => {
-              return (
-                <div
-                  key={`movieToWatch_${index}`}
-                  className="text-center m-2 border p-2"
-                  style={{ minWidth: "250px" }}
-                >
-                  <p>{movie?.title}</p>
-                  <div>
-                    <img width="90" src={movie.image} title={movie.title} />
+                    <NavLink to={`/movies/${movie.id}`}>
+                      <Button className="mt-3" color="primary">
+                        Voir le détail
+                      </Button>
+                    </NavLink>
                   </div>
-                  <Button
-                    className="mt-3"
-                    onClick={() =>
-                      unsubscribeMoviesToWatch(uid, movie.id).then(
-                        (response) => {
-                          getHistorical(uid).then((response) => {
-                            context.setHistorical(response);
-                          });
-                          getCountMoviesToWatch(uid).then((response) =>
-                            setCountMoviesToWatch(response)
-                          );
-                          getMoviesToWatch(uid).then((response) =>
-                            setMoviesToWatch(response)
-                          );
-                        }
-                      )
-                    }
-                  >
-                    Je ne suis plus intéressé
-                  </Button>
-                  <NavLink to={`/movies/${movie.id}`}>
-                    <Button className="mt-3" color="primary">
-                      Voir le détail
-                    </Button>
-                  </NavLink>
-                </div>
-              );
-            })
-          : null}
-      </motion.div>
+                );
+              })
+            : null}
+        </motion.div>
+      </div>
     </Container>
   );
 }
