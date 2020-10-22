@@ -96,7 +96,7 @@ export default function Dashboard() {
             );
           })
         ) : (
-          <Alert>Pas de films ce mois...</Alert>
+          null
         )}
       </motion.div>
       <motion.h1
