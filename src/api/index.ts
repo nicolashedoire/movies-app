@@ -2,14 +2,19 @@ import axios from "axios";
 import { IMovie } from "./types";
 
 export const getScrapping = async (page: number) => {
-  const response = await axios.get(`${process.env.REACT_APP_API_PATH}/scrapping?page=${page}`);
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_PATH}/scrapping?page=${page}`
+  );
   return response.data;
 };
 
 export const postSearch = async (text: string) => {
-  const response = await axios.post(`${process.env.REACT_APP_API_PATH}/search`, {
-    search: text,
-  });
+  const response = await axios.post(
+    `${process.env.REACT_APP_API_PATH}/search`,
+    {
+      search: text,
+    }
+  );
   return response.data;
 };
 

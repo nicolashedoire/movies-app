@@ -19,7 +19,7 @@ export default function Sidebar(props: any) {
         <div className="sidebar">
           <ul>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/search" className="ml-2">
+              <NavLink to="/search">
                 <FontAwesomeIcon
                   size="1x"
                   icon={faSearch}
@@ -28,12 +28,12 @@ export default function Sidebar(props: any) {
               </NavLink>
             </li>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/dashboard" className="ml-2">
+              <NavLink to="/dashboard">
                 <FontAwesomeIcon size="1x" icon={faHome} className="pointer" />
               </NavLink>
             </li>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/movies" className="ml-2">
+              <NavLink to="/movies">
                 <FontAwesomeIcon
                   size="1x"
                   icon={faLayerGroup}
@@ -42,7 +42,7 @@ export default function Sidebar(props: any) {
               </NavLink>
             </li>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/movies/new" className="ml-2">
+              <NavLink to="/movies/new">
                 <FontAwesomeIcon
                   size="1x"
                   icon={faFolderPlus}
@@ -51,12 +51,12 @@ export default function Sidebar(props: any) {
               </NavLink>
             </li>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/profile" className="ml-2 p-2">
+              <NavLink to="/profile">
                 <FontAwesomeIcon size="1x" icon={faCog} className="pointer" />
               </NavLink>
             </li>
             <li className="mt-2 mb-2 p-2">
-              <NavLink to="/tools" className="ml-2 p-2">
+              <NavLink to="/tools">
                 <FontAwesomeIcon
                   size="1x"
                   icon={faHammer}

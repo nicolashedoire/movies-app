@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getScrapping } from '../../api';
+import { getScrapping } from "../../api";
 import { Button, Input, Spinner, Container, Row, Col } from "reactstrap";
 import "./styles.scss";
 
@@ -34,7 +34,7 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
     };
     getScrapping(this.state.page).then((response) => {
       this.setState({ movie: response, isLoading: false });
-    })
+    });
   }
 
   handlePageChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -57,7 +57,7 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
     this.setState({ isLoading: true });
     getScrapping(this.state.page).then((response) => {
       this.setState({ movie: response, isLoading: false });
-    })
+    });
   };
 
   startScrapping = () => {
@@ -67,7 +67,7 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
       if (counter < endPage) {
         getScrapping(counter).then((response) => {
           this.setState({ movie: response, isLoading: false });
-        })
+        });
         counter++;
       } else {
         clearInterval(interval);
@@ -137,10 +137,7 @@ export default class scraperGenerator extends Component<MyProps, MyState> {
                   />
                 </div>
                 <div className="mt-4">
-                  <Button
-                    color="primary"
-                    onClick={this.startScrapping}
-                  >
+                  <Button color="primary" onClick={this.startScrapping}>
                     Lancer le scrapping
                   </Button>
                 </div>

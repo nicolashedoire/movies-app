@@ -8,3 +8,20 @@
   overflow: hidden;
   overflow-y: auto;
 }
+
+.searchContainer {
+  display: grid;
+  grid-template-columns: 200px calc(100% - 200px);
+}
+
+.filtersContainer {
+  height: 100vh;
+  width: 200px;
+  overflow: hidden;
+  .filters {
+    background-color: rgb(250, 250, 250);
+    height: 100%;
+    width: 200px;
+    position: fixed;
+  }
+}

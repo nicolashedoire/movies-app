@@ -66,29 +66,44 @@ export default function Dashboard() {
   };
 
   return (
-    <Container fluid className="p-0 m-0">
+    <Container fluid className={`p-0 m-0 ${styles.page}`}>
       <div className={styles.statsBar}>
         <Row>
-          <Col md={2}>
+          <Col md={2} className="p-0 m-0">
             <div className={styles.statsCell}>
               <p>Total de films : {moviesCount ? moviesCount : 0}</p>
             </div>
           </Col>
-          <Col md={2}>
+          <Col md={2} className="p-0 m-0">
             <div className={styles.statsCell}>
               <p>Films vus : {countMoviesSeen ? countMoviesSeen : 0}</p>
             </div>
           </Col>
-          <Col md={2}>
+          <Col md={2} className="p-0 m-0">
             <div className={styles.statsCell}>
               <p>
                 Films à voir : {countMoviesToWatch ? countMoviesToWatch : 0}
               </p>
             </div>
           </Col>
+          <Col md={2} className="p-0 m-0">
+            <div className={styles.statsCell}>
+              <p>...</p>
+            </div>
+          </Col>
+          <Col md={2} className="p-0 m-0">
+            <div className={styles.statsCell}>
+              <p>...</p>
+            </div>
+          </Col>
+          <Col md={2} className="p-0 m-0">
+            <div className={styles.statsCell}>
+              <p>...</p>
+            </div>
+          </Col>
         </Row>
       </div>
-      <div className="p-4">
+      <div className="p-4 mt-4">
         <motion.h3 className="mt-4">Les films ce mois-ci</motion.h3>
         <motion.div
           initial={{ opacity: 0 }}

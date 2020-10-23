@@ -105,7 +105,7 @@ export default function MoviesCreate() {
             />
           </Col>
           <Col md={12}>
-            <Button>Créer</Button>
+            <Button color="primary">Créer</Button>
           </Col>
         </Row>
       </Form>
