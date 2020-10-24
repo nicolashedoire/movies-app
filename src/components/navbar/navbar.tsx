@@ -25,7 +25,9 @@ export default function TopBar() {
       className="navbarContainer"
     >
       <Navbar color="light" light expand="md">
+      <NavLink to="/" className="ml-2">
         <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
+        </NavLink>
         <NavbarToggler />
         <Collapse isOpen={true} navbar>
           <Nav className="mr-auto" navbar></Nav>
@@ -50,7 +52,7 @@ export default function TopBar() {
                         .auth()
                         .signOut()
                         .then(() => {
-                          history.push("/signin");
+                          history.push("/");
                         });
                     } catch (err) {
                       alert(err);

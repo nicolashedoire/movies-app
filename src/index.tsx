@@ -19,6 +19,7 @@ import { createFirestoreInstance } from "redux-firestore";
 import { useSelector } from "react-redux";
 import SignIn from "./pages/auth/signIn";
 import SignUp from "./pages/auth/signUp";
+import Landing from "./pages/landing";
 import NavBar from "./components/navbar";
 import {
   BrowserRouter as Router,
@@ -109,10 +110,10 @@ function AuthIsLoaded({ children }: any) {
       <Router>
         <NavBar />
         <Switch>
-          <Redirect from="/" to={"/signin"} exact />
+          <Route exact path="/" component={Landing} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/signin" component={SignIn} />
-          <Redirect from="*" to={"/signin"} exact />
+          <Redirect from="*" to={"/"} exact />
         </Switch>
       </Router>
     </React.Fragment>

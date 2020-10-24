@@ -32,7 +32,7 @@ export default function MoviesDetails() {
   }, []);
 
   useEffect(() => {
-    console.log(movie)
+    console.log(movie);
     if (movie && historical.length > 0) {
       const finded = historical.filter(
         (element) => element.movie_id === movie.id
@@ -43,8 +43,7 @@ export default function MoviesDetails() {
     }
   }, [movie, historical]);
 
-  useEffect(() => {
-  }, [isInHistorical]);
+  useEffect(() => {}, [isInHistorical]);
 
   const actionClick = (params: { action: string; movieId: string }) => {
     const historicalExists = context.historical.filter(
@@ -84,10 +83,12 @@ export default function MoviesDetails() {
       <a
         target="_blank"
         href={`http://www.allocine.fr/film/fichefilm_gen_cfilm=${movie?.allocine_id}.html`}
-      >{movie?.allocine_id ? 
-        <Button color="primary" className="mt-4">
-          Voir la fiche allociné
-        </Button> : null }
+      >
+        {movie?.allocine_id ? (
+          <Button color="primary" className="mt-4">
+            Voir la fiche allociné
+          </Button>
+        ) : null}
       </a>
       {isInHistorical?.was_seen ? (
         <Button disabled className="mt-4 ml-2" color="primary">
@@ -118,16 +119,16 @@ export default function MoviesDetails() {
 
       <Row className="mt-4">
         <div className="ml-3">
-          <img src="/img/netflix.png" width="50" title="Netflix"/>
+          <img src="/img/netflix.png" width="50" title="Netflix" />
         </div>
         <div className="ml-3">
-          <img src="/img/prime.jpeg" width="55" title="Amazon Prime"/>
+          <img src="/img/prime.jpeg" width="55" title="Amazon Prime" />
         </div>
-        <div className="ml-3"> 
-          <img src="/img/disney-plus.png" width="85" title="Disney +"/>
+        <div className="ml-3">
+          <img src="/img/disney-plus.png" width="85" title="Disney +" />
         </div>
-        <div className="ml-3"> 
-          <img src="/img/youtube.png" width="55" title="Youtube"/>
+        <div className="ml-3">
+          <img src="/img/youtube.png" width="55" title="Youtube" />
         </div>
       </Row>
       {movie ? (
