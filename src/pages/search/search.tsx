@@ -80,7 +80,7 @@ export default function Search() {
                               </Col>
                               <Col md={9}>
                                 <p>{movie?.title}</p>
-                                <p>ID : {movie?.allocine_id}</p>
+                                <p>ID : {movie?.allocine_id ? movie?.allocine_id : 'N/A' }</p>
                               </Col>
                             </Row>
                           </NavLink>

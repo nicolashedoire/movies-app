@@ -32,6 +32,7 @@ export default function MoviesDetails() {
   }, []);
 
   useEffect(() => {
+    console.log(movie)
     if (movie && historical.length > 0) {
       const finded = historical.filter(
         (element) => element.movie_id === movie.id
@@ -43,7 +44,6 @@ export default function MoviesDetails() {
   }, [movie, historical]);
 
   useEffect(() => {
-    console.log(isInHistorical)
   }, [isInHistorical]);
 
   const actionClick = (params: { action: string; movieId: string }) => {
@@ -84,10 +84,10 @@ export default function MoviesDetails() {
       <a
         target="_blank"
         href={`http://www.allocine.fr/film/fichefilm_gen_cfilm=${movie?.allocine_id}.html`}
-      >
+      >{movie?.allocine_id ? 
         <Button color="primary" className="mt-4">
           Voir la fiche allociné
-        </Button>
+        </Button> : null }
       </a>
       {isInHistorical?.was_seen ? (
         <Button disabled className="mt-4 ml-2" color="primary">
