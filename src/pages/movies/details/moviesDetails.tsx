@@ -118,13 +118,16 @@ export default function MoviesDetails() {
 
       <Row className="mt-4">
         <div className="ml-3">
-          <img src="/img/netflix.png" width="50"/>
+          <img src="/img/netflix.png" width="50" title="Netflix"/>
         </div>
         <div className="ml-3">
-          <img src="/img/prime.jpeg" width="55"/>
+          <img src="/img/prime.jpeg" width="55" title="Amazon Prime"/>
         </div>
         <div className="ml-3"> 
-          <img src="/img/disney-plus.png" width="85"/>
+          <img src="/img/disney-plus.png" width="85" title="Disney +"/>
+        </div>
+        <div className="ml-3"> 
+          <img src="/img/youtube.png" width="55" title="Youtube"/>
         </div>
       </Row>
       {movie ? (
