@@ -17,7 +17,7 @@ export default function Search() {
 
   useEffect(() => {
     if (search !== "" && search.length >= 3) {
-      postSearch(search).then((result) => {
+      postSearch(search, type).then((result) => {
         setSearchResults(result);
       });
     } else {
@@ -48,22 +48,25 @@ export default function Search() {
         <Container fluid>
           <Row className="mt-4">
             <Col md={12} className="mt-4">
-              { type === "title" ? 
-              <Input
-                type="text"
-                placeholder="recherchez un film par titre"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.currentTarget.value);
-                }}
-              /> : <Input
-              type="number"
-              placeholder="recherchez un film avec un id allociné"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.currentTarget.value);
-              }}
-            />}
+              {type === "title" ? (
+                <Input
+                  type="text"
+                  placeholder="recherchez un film par titre"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.currentTarget.value);
+                  }}
+                />
+              ) : (
+                <Input
+                  type="number"
+                  placeholder="recherchez un film avec un id allociné"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.currentTarget.value);
+                  }}
+                />
+              )}
               {searchResults.length > 0 ? (
                 <div className={`${styles.searchList} mt-2 p-4`}>
                   <Row className="mb-4">
@@ -77,6 +80,7 @@ export default function Search() {
                               </Col>
                               <Col md={9}>
                                 <p>{movie?.title}</p>
+                                <p>ID : {movie?.allocine_id}</p>
                               </Col>
                             </Row>
                           </NavLink>

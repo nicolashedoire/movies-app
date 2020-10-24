@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Alert, Row, Col } from "reactstrap";
 import { NavLink, useParams } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/rootReducer";
 import { getMovie, deleteMovie } from "../../../api";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../../index";
+import { postHistorical, putHistorical, getHistorical } from "../../../api";
 
 export default function MoviesDetails() {
+  const context: any = useContext(AuthContext);
+  const historical: Array<any> = context.historical;
+  const uid = useSelector((state: RootState) => state.firebase.auth.uid);
   const { id } = useParams();
   const history = useHistory();
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   const [movie, setMovie] = useState<any | null>(null);
+  const [isInHistorical, setIsInHistorical] = useState<any | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -22,6 +30,41 @@ export default function MoviesDetails() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (movie && historical.length > 0) {
+      const finded = historical.filter(
+        (element) => element.movie_id === movie.id
+      );
+      if (finded) {
+        setIsInHistorical(finded[0]);
+      }
+    }
+  }, [movie, historical]);
+
+  useEffect(() => {
+    console.log(isInHistorical)
+  }, [isInHistorical]);
+
+  const actionClick = (params: { action: string; movieId: string }) => {
+    const historicalExists = context.historical.filter(
+      (element: any) => element.movie_id === params.movieId
+    );
+
+    if (historicalExists.length > 0) {
+      putHistorical({ ...params, userId: uid }).then(() => {
+        getHistorical(uid).then((response) => {
+          context.setHistorical(response);
+        });
+      });
+    } else {
+      postHistorical({ ...params, userId: uid }).then(() => {
+        getHistorical(uid).then((response) => {
+          context.setHistorical(response);
+        });
+      });
+    }
+  };
 
   return (
     <Container fluid>
@@ -46,8 +89,30 @@ export default function MoviesDetails() {
           Voir la fiche allociné
         </Button>
       </a>
-      <Button className="mt-4 ml-2">Je veux le voir</Button>
-      <Button className="mt-4 ml-2">Je l'ai déjà vu</Button>
+      {isInHistorical?.was_seen ? (
+        <Button disabled className="mt-4 ml-2" color="primary">
+          Je l'ai vu
+        </Button>
+      ) : (
+        <Button
+          className="mt-4 ml-2"
+          onClick={() => actionClick({ action: "A", movieId: movie.id })}
+        >
+          Je l'ai vu
+        </Button>
+      )}
+      {isInHistorical?.to_watch ? (
+        <Button disabled className="mt-4 ml-2" color="primary">
+          Je veux le voir
+        </Button>
+      ) : (
+        <Button
+          className="mt-4 ml-2"
+          onClick={() => actionClick({ action: "B", movieId: movie.id })}
+        >
+          Je veux le voir
+        </Button>
+      )}
       <Button className="mt-4 ml-2">Acheter le film</Button>
       {movie ? (
         <Row className="mt-4">

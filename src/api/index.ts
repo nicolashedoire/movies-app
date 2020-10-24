@@ -8,9 +8,9 @@ export const getScrapping = async (page: number) => {
   return response.data;
 };
 
-export const postSearch = async (text: string) => {
+export const postSearch = async (text: string, type: string) => {
   const response = await axios.post(
-    `${process.env.REACT_APP_API_PATH}/search`,
+    `${process.env.REACT_APP_API_PATH}/search?type=${type}`,
     {
       search: text,
     }
