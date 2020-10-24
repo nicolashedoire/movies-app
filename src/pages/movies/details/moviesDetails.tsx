@@ -113,7 +113,20 @@ export default function MoviesDetails() {
           Je veux le voir
         </Button>
       )}
-      <Button className="mt-4 ml-2">Acheter le film</Button>
+      <Button className="mt-4 ml-2">Je veux l'acheter</Button>
+      <Button className="mt-4 ml-2">Je l'ai acheté</Button>
+
+      <Row className="mt-4">
+        <div className="ml-3">
+          <img src="/img/netflix.png" width="50"/>
+        </div>
+        <div className="ml-3">
+          <img src="/img/prime.jpeg" width="55"/>
+        </div>
+        <div className="ml-3"> 
+          <img src="/img/disney-plus.png" width="85"/>
+        </div>
+      </Row>
       {movie ? (
         <Row className="mt-4">
           <Col md={4}>
