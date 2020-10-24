@@ -25,6 +25,20 @@ export const getMovie = async (id: string) => {
   return response.data;
 };
 
+export const getMoviePlatforms = async (id: string) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_PATH}/movies/${id}/platforms`
+  );
+  return response.data;
+};
+
+export const putMoviePlatforms = async (id: string, data: any) => {
+  const response = await axios.put(
+    `${process.env.REACT_APP_API_PATH}/movies/${id}/platforms`, data
+  );
+  return response.data;
+};
+
 export const getMoviesMonthly = async () => {
   const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies/monthly`

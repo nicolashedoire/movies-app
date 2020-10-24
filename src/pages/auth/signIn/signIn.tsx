@@ -47,7 +47,9 @@ export default function SignIn() {
             />
           </Col>
           <Col md={12}>
-            <Button onClick={handleSubmit}>Se connecter</Button>
+            <Button color="primary" onClick={handleSubmit}>
+              Se connecter
+            </Button>
           </Col>
         </Row>
       </Form>

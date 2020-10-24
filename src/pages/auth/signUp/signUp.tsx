@@ -80,7 +80,7 @@ export default function SignUp() {
             />
           </Col>
           <Col md={12}>
-            <Button>S'inscrire</Button>
+            <Button color="primary">S'inscrire</Button>
           </Col>
         </Row>
       </Form>

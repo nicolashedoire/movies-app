@@ -7,7 +7,12 @@ import { RootState } from "../../../store/rootReducer";
 import { getMovie, deleteMovie } from "../../../api";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../index";
-import { postHistorical, putHistorical, getHistorical } from "../../../api";
+import {
+  postHistorical,
+  putHistorical,
+  getHistorical,
+  getMoviePlatforms,
+} from "../../../api";
 
 export default function MoviesDetails() {
   const context: any = useContext(AuthContext);
@@ -19,6 +24,7 @@ export default function MoviesDetails() {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   const [movie, setMovie] = useState<any | null>(null);
+  const [platforms, setPlatforms] = useState<any>(null);
   const [isInHistorical, setIsInHistorical] = useState<any | null>(null);
 
   useEffect(() => {
@@ -28,6 +34,9 @@ export default function MoviesDetails() {
         .catch((err) => {
           history.push("/error");
         });
+      getMoviePlatforms(id)
+        .then((platforms: any) => setPlatforms(platforms))
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -117,20 +126,6 @@ export default function MoviesDetails() {
       <Button className="mt-4 ml-2">Je veux l'acheter</Button>
       <Button className="mt-4 ml-2">Je l'ai acheté</Button>
 
-      <Row className="mt-4">
-        <div className="ml-3">
-          <img src="/img/netflix.png" width="50" title="Netflix" />
-        </div>
-        <div className="ml-3">
-          <img src="/img/prime.jpeg" width="55" title="Amazon Prime" />
-        </div>
-        <div className="ml-3">
-          <img src="/img/disney-plus.png" width="85" title="Disney +" />
-        </div>
-        <div className="ml-3">
-          <img src="/img/youtube.png" width="55" title="Youtube" />
-        </div>
-      </Row>
       {movie ? (
         <Row className="mt-4">
           <Col md={4}>
@@ -160,6 +155,50 @@ export default function MoviesDetails() {
             ) : (
               <Alert color="danger">Pas de réalisateur...</Alert>
             )}
+            <Row className="mt-4">
+              <Col md={3}>
+                <img src="/img/netflix.png" width="50" title="Netflix" />
+              </Col>
+              <Col md={9}>
+                <Button>Ajouter</Button>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col md={3}>
+                <img src="/img/prime.jpeg" width="55" title="Amazon Prime" />
+              </Col>
+              <Col md={9}>
+                <Button>Ajouter</Button>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col md={3}>
+                <img src="/img/disney-plus.png" width="85" title="Disney +" />
+              </Col>
+              <Col md={9}>
+                <Button>Ajouter</Button>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col md={3}>
+                <img src="/img/youtube.png" width="55" title="Youtube" />
+              </Col>
+              <Col md={9}>
+                <Button>Ajouter</Button>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col md={3}>
+                <img
+                  src="/img/playstation-store.png"
+                  width="55"
+                  title="Playsation Store"
+                />
+              </Col>
+              <Col md={9}>
+                <Button>Ajouter</Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
       ) : null}

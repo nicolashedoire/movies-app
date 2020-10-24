@@ -25,8 +25,8 @@ export default function TopBar() {
       className="navbarContainer"
     >
       <Navbar color="light" light expand="md">
-      <NavLink to="/" className="ml-2">
-        <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
+        <NavLink to="/" className="ml-2">
+          <NavbarBrand>Movies-app {process.env.NODE_ENV}</NavbarBrand>
         </NavLink>
         <NavbarToggler />
         <Collapse isOpen={true} navbar>
