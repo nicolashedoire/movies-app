@@ -12,6 +12,7 @@ import {
   putHistorical,
   getHistorical,
   getMoviePlatforms,
+  putMoviePlatforms,
 } from "../../../api";
 
 export default function MoviesDetails() {
@@ -35,13 +36,12 @@ export default function MoviesDetails() {
           history.push("/error");
         });
       getMoviePlatforms(id)
-        .then((platforms: any) => setPlatforms(platforms))
+        .then((data: any) => setPlatforms(data.platforms))
         .catch((err) => console.log(err));
     }
   }, []);
 
   useEffect(() => {
-    console.log(movie);
     if (movie && historical.length > 0) {
       const finded = historical.filter(
         (element) => element.movie_id === movie.id
@@ -52,7 +52,7 @@ export default function MoviesDetails() {
     }
   }, [movie, historical]);
 
-  useEffect(() => {}, [isInHistorical]);
+  useEffect(() => {}, [isInHistorical, platforms]);
 
   const actionClick = (params: { action: string; movieId: string }) => {
     const historicalExists = context.historical.filter(
@@ -72,6 +72,14 @@ export default function MoviesDetails() {
         });
       });
     }
+  };
+
+  const putPlatforms = (platform: string) => {
+    putMoviePlatforms(movie.id, platform)
+      .then((data) => {
+        setPlatforms(data.platforms);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -160,7 +168,15 @@ export default function MoviesDetails() {
                 <img src="/img/netflix.png" width="50" title="Netflix" />
               </Col>
               <Col md={9}>
-                <Button>Ajouter</Button>
+              {platforms?.netflix?.active ? (
+                  <Alert color="success" disabled>
+                    Ajouté
+                  </Alert>
+                ) : (
+                  <Button onClick={() => putPlatforms("netflix")}>
+                    Ajouter
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -168,7 +184,15 @@ export default function MoviesDetails() {
                 <img src="/img/prime.jpeg" width="55" title="Amazon Prime" />
               </Col>
               <Col md={9}>
-                <Button>Ajouter</Button>
+              {platforms?.amazonPrime?.active ? (
+                  <Alert color="success" disabled>
+                    Ajouté
+                  </Alert>
+                ) : (
+                  <Button onClick={() => putPlatforms("amazonPrime")}>
+                    Ajouter
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -176,7 +200,15 @@ export default function MoviesDetails() {
                 <img src="/img/disney-plus.png" width="85" title="Disney +" />
               </Col>
               <Col md={9}>
-                <Button>Ajouter</Button>
+                {platforms?.disneyPlus?.active ? (
+                  <Alert color="success" disabled>
+                    Ajouté
+                  </Alert>
+                ) : (
+                  <Button onClick={() => putPlatforms("disneyPlus")}>
+                    Ajouter
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -184,7 +216,15 @@ export default function MoviesDetails() {
                 <img src="/img/youtube.png" width="55" title="Youtube" />
               </Col>
               <Col md={9}>
-                <Button>Ajouter</Button>
+                {platforms?.youtube?.active ? (
+                  <Alert color="success" disabled>
+                    Ajouté
+                  </Alert>
+                ) : (
+                  <Button onClick={() => putPlatforms("youtube")}>
+                    Ajouter
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -196,7 +236,15 @@ export default function MoviesDetails() {
                 />
               </Col>
               <Col md={9}>
-                <Button>Ajouter</Button>
+                {platforms?.playstationStore?.active ? (
+                  <Alert color="success" disabled>
+                    Ajouté
+                  </Alert>
+                ) : (
+                  <Button onClick={() => putPlatforms("playstationStore")}>
+                    Ajouter
+                  </Button>
+                )}
               </Col>
             </Row>
           </Col>

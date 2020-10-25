@@ -90,14 +90,6 @@ export default function MoviesUpdate() {
           <Col md={12} className="mb-4">
             <Input type="text" placeholder="date" disabled value={date} />
           </Col>
-          <Col md={12} className="mb-4">
-            <Input
-              type="date"
-              placeholder="date"
-              value={date}
-              onChange={(e) => setDate(e.currentTarget.value)}
-            />
-          </Col>
           <Col md={12}>
             <Button>Update</Button>
           </Col>

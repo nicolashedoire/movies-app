@@ -7,6 +7,7 @@ export default function MoviesCreate() {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
+  const [allocineId, setAllocineId] = useState("");
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [image, setImage] = useState("");
@@ -24,6 +25,7 @@ export default function MoviesCreate() {
           image,
           director,
           duration,
+          allocine_id: allocineId,
         })
       : null;
   };
@@ -48,6 +50,14 @@ export default function MoviesCreate() {
       <Form onSubmit={handleSubmit}>
         <h3 className="mt-4">Nouveau film</h3>
         <Row className="mt-4">
+          <Col md={12} className="mb-4">
+            <Input
+              type="text"
+              placeholder="ID allociné"
+              value={allocineId}
+              onChange={(e) => setAllocineId(e.currentTarget.value)}
+            />
+          </Col>
           <Col md={12} className="mb-4">
             <Input
               type="text"
@@ -96,14 +106,14 @@ export default function MoviesCreate() {
               onChange={(e) => setDirector(e.currentTarget.value)}
             />
           </Col>
-          <Col md={12} className="mb-4">
+          {/* <Col md={12} className="mb-4">
             <Input
               type="date"
               placeholder="date"
               value={date}
               onChange={(e) => setDate(e.currentTarget.value)}
             />
-          </Col>
+          </Col> */}
           <Col md={12}>
             <Button color="primary">Créer</Button>
           </Col>

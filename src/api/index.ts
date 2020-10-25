@@ -32,9 +32,10 @@ export const getMoviePlatforms = async (id: string) => {
   return response.data;
 };
 
-export const putMoviePlatforms = async (id: string, data: any) => {
+export const putMoviePlatforms = async (movieId: string, platform: string) => {
   const response = await axios.put(
-    `${process.env.REACT_APP_API_PATH}/movies/${id}/platforms`, data
+    `${process.env.REACT_APP_API_PATH}/movies/${movieId}/platforms`,
+    { platform }
   );
   return response.data;
 };

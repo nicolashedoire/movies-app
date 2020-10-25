@@ -5,4 +5,5 @@ export interface IMovie {
   image: string;
   director: string;
   duration: string;
+  allocine_id?: string;
 }
