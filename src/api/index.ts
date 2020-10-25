@@ -40,6 +40,16 @@ export const putMoviePlatforms = async (movieId: string, platform: string) => {
   return response.data;
 };
 
+export const deleteMoviePlatforms = async (
+  movieId: string,
+  platform: string
+) => {
+  const response = await axios.delete(
+    `${process.env.REACT_APP_API_PATH}/movies/${movieId}/platforms/${platform}`
+  );
+  return response.data;
+};
+
 export const getMoviesMonthly = async () => {
   const response = await axios.get(
     `${process.env.REACT_APP_API_PATH}/movies/monthly`

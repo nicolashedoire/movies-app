@@ -13,6 +13,7 @@ import {
   getHistorical,
   getMoviePlatforms,
   putMoviePlatforms,
+  deleteMoviePlatforms,
 } from "../../../api";
 
 export default function MoviesDetails() {
@@ -76,6 +77,14 @@ export default function MoviesDetails() {
 
   const putPlatforms = (platform: string) => {
     putMoviePlatforms(movie.id, platform)
+      .then((data) => {
+        setPlatforms(data.platforms);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const deletePlatforms = (platform: string) => {
+    deleteMoviePlatforms(movie.id, platform)
       .then((data) => {
         setPlatforms(data.platforms);
       })
@@ -168,10 +177,22 @@ export default function MoviesDetails() {
                 <img src="/img/netflix.png" width="50" title="Netflix" />
               </Col>
               <Col md={9}>
-              {platforms?.netflix?.active ? (
-                  <Alert color="success" disabled>
-                    Ajouté
-                  </Alert>
+                {platforms?.netflix?.active ? (
+                    <Row>
+                    <Col md={6}>
+                      <Alert color="success" disabled>
+                        Ajouté
+                      </Alert>
+                    </Col>
+                    <Col md={6}>
+                      <Button
+                        color="danger"
+                        onClick={() => deletePlatforms("netflix")}
+                      >
+                        Supprimer
+                      </Button>
+                    </Col>
+                  </Row>
                 ) : (
                   <Button onClick={() => putPlatforms("netflix")}>
                     Ajouter
@@ -184,10 +205,22 @@ export default function MoviesDetails() {
                 <img src="/img/prime.jpeg" width="55" title="Amazon Prime" />
               </Col>
               <Col md={9}>
-              {platforms?.amazonPrime?.active ? (
-                  <Alert color="success" disabled>
-                    Ajouté
-                  </Alert>
+                {platforms?.amazonPrime?.active ? (
+                    <Row>
+                    <Col md={6}>
+                      <Alert color="success" disabled>
+                        Ajouté
+                      </Alert>
+                    </Col>
+                    <Col md={6}>
+                      <Button
+                        color="danger"
+                        onClick={() => deletePlatforms("amazonPrime")}
+                      >
+                        Supprimer
+                      </Button>
+                    </Col>
+                  </Row>
                 ) : (
                   <Button onClick={() => putPlatforms("amazonPrime")}>
                     Ajouter
@@ -201,9 +234,21 @@ export default function MoviesDetails() {
               </Col>
               <Col md={9}>
                 {platforms?.disneyPlus?.active ? (
-                  <Alert color="success" disabled>
-                    Ajouté
-                  </Alert>
+                    <Row>
+                    <Col md={6}>
+                      <Alert color="success" disabled>
+                        Ajouté
+                      </Alert>
+                    </Col>
+                    <Col md={6}>
+                      <Button
+                        color="danger"
+                        onClick={() => deletePlatforms("disneyPlus")}
+                      >
+                        Supprimer
+                      </Button>
+                    </Col>
+                  </Row>
                 ) : (
                   <Button onClick={() => putPlatforms("disneyPlus")}>
                     Ajouter
@@ -217,9 +262,21 @@ export default function MoviesDetails() {
               </Col>
               <Col md={9}>
                 {platforms?.youtube?.active ? (
-                  <Alert color="success" disabled>
-                    Ajouté
-                  </Alert>
+                    <Row>
+                    <Col md={6}>
+                      <Alert color="success" disabled>
+                        Ajouté
+                      </Alert>
+                    </Col>
+                    <Col md={6}>
+                      <Button
+                        color="danger"
+                        onClick={() => deletePlatforms("youtube")}
+                      >
+                        Supprimer
+                      </Button>
+                    </Col>
+                  </Row>
                 ) : (
                   <Button onClick={() => putPlatforms("youtube")}>
                     Ajouter
@@ -237,9 +294,23 @@ export default function MoviesDetails() {
               </Col>
               <Col md={9}>
                 {platforms?.playstationStore?.active ? (
-                  <Alert color="success" disabled>
-                    Ajouté
-                  </Alert>
+                  <React.Fragment>
+                    <Row>
+                      <Col md={6}>
+                        <Alert color="success" disabled>
+                          Ajouté
+                        </Alert>
+                      </Col>
+                      <Col md={6}>
+                        <Button
+                          color="danger"
+                          onClick={() => deletePlatforms("playstationStore")}
+                        >
+                          Supprimer
+                        </Button>
+                      </Col>
+                    </Row>
+                  </React.Fragment>
                 ) : (
                   <Button onClick={() => putPlatforms("playstationStore")}>
                     Ajouter
